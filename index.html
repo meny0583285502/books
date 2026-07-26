@@ -28,33 +28,37 @@
         header {
             background: linear-gradient(to bottom, #151515, #000);
             text-align: center;
-            padding: 3rem 1rem 2rem;
+            padding: 4rem 1rem 3rem;
             border-bottom: 2px solid var(--gold);
             position: relative;
         }
         
-        /* תמונת הגרי"ג למעלה בימין */
+        /* תמונת הגרי"ג - מוגדלת ומרשימה יותר */
         .header-rabbi-img {
             position: absolute;
             top: 30px;
-            right: 30px;
-            width: 120px;
-            height: 150px;
-            border: 2px solid var(--gold);
-            border-radius: 8px;
+            right: 40px;
+            width: 180px;
+            height: 240px;
+            border: 3px solid var(--gold);
+            border-radius: 12px;
             object-fit: cover;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.8);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.8);
             background-color: #222;
+            transition: transform 0.3s ease;
+        }
+        .header-rabbi-img:hover {
+            transform: scale(1.05);
         }
 
         header h1 {
             margin: 0 0 1rem 0;
-            font-size: 3.5rem;
+            font-size: 3.8rem;
             color: var(--gold);
             text-shadow: 0 2px 5px rgba(0,0,0,0.8);
         }
         .legacy-text {
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             line-height: 1.6;
             color: #ddd;
             max-width: 800px;
@@ -62,25 +66,28 @@
         }
         .legacy-text strong {
             color: var(--gold);
-            font-size: 1.6rem;
+            font-size: 1.7rem;
         }
         .reminder-phone {
             margin-top: 1.5rem;
-            padding: 10px;
+            padding: 12px;
             background: rgba(197, 160, 89, 0.1);
             border: 1px solid var(--dark-gold);
             display: inline-block;
             border-radius: 5px;
             font-weight: bold;
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             color: #fff;
         }
         
-        @media (max-width: 768px) {
+        /* התאמה למסכים קטנים - מרכוז והגדלה לתמונה */
+        @media (max-width: 900px) {
             .header-rabbi-img {
                 position: static;
                 display: block;
-                margin: 0 auto 20px auto;
+                margin: 0 auto 30px auto;
+                width: 200px;
+                height: 260px;
             }
         }
 
@@ -333,6 +340,8 @@
         .btn-chat:hover { background-color: #1da851; }
         .btn-phone { background-color: #222; border: 1px solid var(--gold); }
         .btn-phone:hover { background-color: #333; }
+        .btn-email { background-color: #444; border: 1px solid #777; }
+        .btn-email:hover { background-color: #555; }
         
         .btn-donate {
             display: inline-block;
@@ -407,6 +416,103 @@
             border-radius: 8px;
             color: #fff;
             font-family: sans-serif;
+        }
+
+        /* ----- עיצוב נגן האודיו המרחף ----- */
+        .audio-widget {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 140px;
+            height: 140px;
+            z-index: 1000;
+            cursor: pointer;
+        }
+        
+        /* הטקסט המסתובב סביב */
+        .audio-text-ring {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            animation: spin 15s linear infinite;
+        }
+        .audio-text-ring svg {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+        .audio-text-ring text {
+            font-family: 'Frank Ruhl Libre', serif;
+            font-size: 13px;
+            fill: var(--gold);
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        /* הכפתור המרכזי */
+        .audio-center-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #2a2a2a, #111);
+            border: 2px solid var(--gold);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.8);
+            transition: 0.3s;
+            text-align: center;
+        }
+        .audio-widget:hover .audio-center-btn {
+            background: linear-gradient(135deg, #333, #1a1a1a);
+            box-shadow: 0 4px 20px rgba(197, 160, 89, 0.4);
+        }
+        
+        .audio-center-btn span {
+            font-size: 0.8rem;
+            line-height: 1.1;
+            color: #fff;
+            padding: 0 5px;
+        }
+        .audio-center-btn strong {
+            color: var(--gold);
+            display: block;
+            margin-top: 3px;
+            font-size: 0.9rem;
+        }
+
+        /* אייקון ניגון/עצירה */
+        .play-icon, .pause-icon {
+            width: 20px;
+            height: 20px;
+            fill: var(--gold);
+            margin-bottom: 5px;
+        }
+        .pause-icon { display: none; }
+        
+        .audio-widget.playing .play-icon { display: none; }
+        .audio-widget.playing .pause-icon { display: block; }
+        /* אם מנגן, הטקסט מסתובב לאט יותר */
+        .audio-widget.playing .audio-text-ring { animation-duration: 8s; }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* במסכים קטנים נזיז את זה קצת */
+        @media (max-width: 768px) {
+            .audio-widget {
+                bottom: 20px;
+                left: 10px;
+                transform: scale(0.85);
+            }
         }
     </style>
 </head>
@@ -545,11 +651,16 @@
                     <svg viewBox="0 0 24 24"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg>
                     052-7648389
                 </a>
+                <!-- כפתור המייל -->
+                <a href="mailto:6183444@gmail.com" class="btn btn-email">
+                    <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                    שליחת מייל
+                </a>
             </div>
 
             <p style="margin-bottom: 20px; font-family:sans-serif;">או השאירו פנייה להזמנה כאן (נשלח ישירות אלינו):</p>
             
-            <form action="https://formspree.io/f/YOUR_FORM_ID_HERE" method="POST">
+            <form onsubmit="showEmailError(event)">
                 <input type="text" name="name" placeholder="שם מלא" required>
                 <input type="tel" name="phone" placeholder="מספר טלפון" required>
                 <textarea name="message" rows="4" placeholder="אילו ספרים תרצו להזמין? אנא ציינו גם מהיכן תרצו לאסוף." required></textarea>
@@ -571,7 +682,61 @@
         <p id="dev-footer">פיתוח תשפ"ו</p>
     </footer>
 
+    <!-- ----- נגן האודיו המרחף ----- -->
+    <audio id="rabbi-audio" src="אני מבטיח.MP3" preload="auto"></audio>
+    
+    <div class="audio-widget" id="audio-widget" onclick="toggleAudio()">
+        <!-- טקסט מעוגל מסתובב -->
+        <div class="audio-text-ring">
+            <svg viewBox="0 0 100 100">
+                <path id="circlePath" d="M 50, 50 m -40, 0 a 40,40 0 1,1 80,0 a 40,40 0 1,1 -80,0" fill="transparent"/>
+                <text>
+                    <textPath href="#circlePath" startOffset="0%">
+                        אני מבטיח שכל מי שיתחיל ללמוד מוסר כל יום קצת, יחיה חיים מאושרים • 
+                    </textPath>
+                </text>
+            </svg>
+        </div>
+        
+        <!-- כפתור מרכזי עם האייקון והטקסט הפנימי -->
+        <div class="audio-center-btn">
+            <!-- אייקון פליי (משולש) -->
+            <svg class="play-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            <!-- אייקון פאוז (קווים) -->
+            <svg class="pause-icon" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+            
+            <span>הקלטה נדירה</span>
+            <strong>ממורינו זללה"ה</strong>
+        </div>
+    </div>
+
     <script>
+        // לוגיקת נגן האודיו
+        const audioEl = document.getElementById('rabbi-audio');
+        const widgetEl = document.getElementById('audio-widget');
+        
+        function toggleAudio() {
+            if (audioEl.paused) {
+                audioEl.play();
+                widgetEl.classList.add('playing');
+            } else {
+                audioEl.pause();
+                widgetEl.classList.remove('playing');
+            }
+        }
+        
+        // כשהשיר מסתיים, לחזור למצב רגיל
+        audioEl.onended = function() {
+            widgetEl.classList.remove('playing');
+        };
+
+        // לוגיקת שגיאת המייל
+        function showEmailError(event) {
+            event.preventDefault(); 
+            alert("שגיאה בשליחת המייל, אנא שלח מייל ישירות לכתובת: 6183444@gmail.com");
+        }
+
+        // אזור ניהול מוסתר
         let clickCount = 0;
         let clickTimer;
 
