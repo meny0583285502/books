@@ -131,7 +131,7 @@
         .checkout-btn { display: block; width: 100%; background: linear-gradient(to right, #2a2a2a, #000); color: var(--gold); border: 2px solid var(--gold); padding: 15px; font-size: 1.3rem; font-weight: bold; cursor: pointer; border-radius: 4px; font-family: 'Frank Ruhl Libre', serif; transition: 0.3s; margin-top: 20px; }
         .checkout-btn:hover { background: var(--gold); color: #000; }
 
-        /* טפסים - טופס צר, מיושר, טלפון ימין */
+        /* טפסים צרים ומיושרים */
         .checkout-form { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; max-width: 350px; margin-left: auto; margin-right: auto; }
         .checkout-form input, .checkout-form textarea { padding: 12px; background-color: #222; border: 1px solid #444; color: #fff; border-radius: 4px; font-family: inherit; font-size: 1.1rem;}
         .checkout-form input:focus, .checkout-form textarea:focus { outline: none; border-color: var(--gold); }
@@ -139,19 +139,18 @@
         .pay-now-btn { background: linear-gradient(to right, var(--dark-gold), var(--gold)); color: #000; border: none; padding: 15px; font-size: 1.4rem; font-weight: bold; cursor: pointer; border-radius: 4px; font-family: 'Frank Ruhl Libre', serif; transition: opacity 0.3s; }
         .pay-now-btn:disabled { opacity: 0.7; cursor: not-allowed; }
 
-        /* יישור שמאלה למספרי טלפון */
-        #order-phone, #contact-phone { text-align: left; direction: ltr; }
+        /* יישור שמאלה למספרי טלפון ומייל */
+        #order-phone, #contact-phone, #order-email, #contact-email { text-align: left; direction: ltr; }
 
         /* מסך הצלחה */
         .success-msg { display: none; text-align: center; padding: 30px 10px; }
         .success-msg h2 { color: #25D366; font-size: 2rem; margin-bottom: 10px; }
         .success-msg p { font-size: 1.3rem; color: #fff; }
 
-        /* מסגרת האייפריים של התשלום מוגדלת בכדי שלא יוסתר כפתור התשלום */
-        #nedarim-iframe-container { display: none; width: 100%; height: 650px; margin-top: 15px; border-radius: 8px; overflow: hidden; border: 1px solid #444; }
+        /* מוגדל כדי שלא יוסתר הכפתור תשלום */
+        #nedarim-iframe-container { display: none; width: 100%; height: 750px; margin-top: 15px; border-radius: 8px; overflow: hidden; border: 1px solid #444; }
         #nedarim-iframe { width: 100%; height: 100%; border: none; }
 
-        /* פאנל פיתוח מוסתר */
         #admin-panel { display: none; background: #111; border: 2px dashed var(--gold); padding: 2rem; max-width: 600px; margin: 2rem auto; border-radius: 8px; }
         #admin-panel h2 { color: var(--gold); text-align: center; margin-top: 0; }
         .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
@@ -343,8 +342,8 @@
         <div class="contact-section">
             <h2 style="color:var(--gold); margin-top:0;">יצירת קשר ופניות</h2>
             <div class="contact-methods">
-                <a href="https://wa.me/972559282259?text=%D7%A9%D7%9C%D7%95%D7%9D%20%D7%94%D7%92%D7%A2%D7%AA%D7%99%20%D7%93%D7%A8%D7%9A%20%D7%94%D7%90%D7%AA%D7%A8%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%94%D7%96%D7%9E%D7%99%D7%9F%20%D7%90%D7%AA%20%D7%94%D7%A1%D7%A4%D7%A8%D7%99%D7%9D." target="_blank" class="btn btn-chat">
-                    <svg viewBox="0 0 24 24"><path d="M20.52 3.48A11.96 11.96 0 0 0 12 0C5.37 0 0 5.37 0 12c0 2.12.55 4.19 1.6 6L.5 24l6.14-1.61A11.92 11.92 0 0 0 12 24c6.63 0 12-5.37 12-12 0-3.21-1.25-6.23-3.48-8.52zM12 22.02c-1.8 0-3.56-.48-5.11-1.4l-.37-.22-3.8.99.99-3.7-.24-.38A9.97 9.97 0 0 1 2 12c0-5.51 4.49-10 10-10 2.67 0 5.18 1.04 7.07 2.93A9.95 9.95 0 0 1 22 12c0 5.51-4.49 10-10 10zM17.47 15c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.34.22-.64.07-.3-.15-1.26-.46-2.4-1.48-.88-.79-1.48-1.77-1.65-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.3.45-.45.15-.15.2-.26.3-.43.1-.17.05-.32-.02-.47-.07-.15-.67-1.62-.92-2.22-.25-.58-.5-.5-.67-.51h-.58c-.2 0-.52.07-.79.37-.27.3-1.02 1-1.02 2.44 0 1.44 1.05 2.83 1.2 3.03.15.2 2.07 3.16 5.01 4.43 2.94 1.27 2.94.85 3.48.79.55-.06 1.76-.72 2.01-1.42.25-.7.25-1.3.17-1.42-.08-.12-.27-.2-.57-.35z"/></svg> <span>הודעה מהירה</span>
+                <a href="https://api.whatsapp.com/send?phone=972559282259&text=%D7%A9%D7%9C%D7%95%D7%9D%20%D7%94%D7%92%D7%A2%D7%AA%D7%99%20%D7%93%D7%A8%D7%9A%20%D7%94%D7%90%D7%AA%D7%A8%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%94%D7%96%D7%9E%D7%99%D7%9F%20%D7%90%D7%AA%20%D7%94%D7%A1%D7%A4%D7%A8%D7%99%D7%9D" target="_blank" class="btn btn-chat">
+                    <svg viewBox="0 0 24 24"><path d="M20.52 3.48A11.96 11.96 0 0 0 12 0C5.37 0 0 5.37 0 12c0 2.12.55 4.19 1.6 6L.5 24l6.14-1.61A11.92 11.92 0 0 0 12 24c6.63 0 12-5.37 12-12 0-3.21-1.25-6.23-3.48-8.52zM12 22.02c-1.8 0-3.56-.48-5.11-1.4l-.37-.22-3.8.99.99-3.7-.24-.38A9.97 9.97 0 0 1 2 12c0-5.51 4.49-10 10-10 2.67 0 5.18 1.04 7.07 2.93A9.95 9.95 0 0 1 22 12c0 5.51-4.49 10-10 10zM17.47 15c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.34.22-.64.07-.3-.15-1.26-.46-2.4-1.48-.88-.79-1.48-1.77-1.65-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.3.45-.45.15-.15.2-.26.3-.43.1-.17.05-.32-.02-.47-.07-.15-.67-1.62-.92-2.22-.25-.58-.5-.5-.67-.51h-.58c-.2 0-.52.07-.79.37-.27.3-1.02 1-1.02 2.44 0 1.44 1.05 2.83 1.2 3.03.15.2 2.07 3.16 5.01 4.43 2.94 1.27 2.94.85 3.48.79.55-.06 1.76-.72 2.01-1.42.25-.7.25-1.3.17-1.42-.08-.12-.27-.2-.57-.35z"/></svg> <span>055-9282259</span>
                 </a>
                 <a href="tel:0583285502" class="btn btn-phone">
                     <svg viewBox="0 0 24 24"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg> <span>058-3285502</span>
@@ -352,18 +351,15 @@
                 <a href="tel:0527648389" class="btn btn-phone">
                     <svg viewBox="0 0 24 24"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg> <span>052-7648389</span>
                 </a>
-                <!-- החזרת השליחת מייל - תיקון שדה טקסט נקי -->
                 <a href="mailto:anubanyak.musar@gmail.com" class="btn btn-email">
-                    <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg> <span>שליחת מייל</span>
+                    <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg> <span>anubanyak.musar@gmail.com</span>
                 </a>
             </div>
             
             <p style="margin-bottom: 20px; font-family:sans-serif;">או השאירו פנייה כללית ונחזור אליכם:</p>
-            <!-- חלון פניות צר יותר -->
             <form class="checkout-form" onsubmit="submitContact(event)">
                 <input type="text" id="contact-name" placeholder="שם מלא" required>
                 <input type="tel" id="contact-phone" placeholder="מספר טלפון" required>
-                <!-- הוספת שדה מייל כאן -->
                 <input type="email" id="contact-email" placeholder="כתובת מייל (לא חובה)">
                 <textarea id="contact-message" rows="3" placeholder="תוכן הפנייה..." required></textarea>
                 <button type="submit" class="pay-now-btn" id="contact-btn">שלח פנייה</button>
@@ -394,7 +390,6 @@
         <p id="dev-footer">פיתוח תשפ"ו</p>
     </footer>
 
-    <!-- נגן אודיו -->
     <audio id="rabbi-audio" src="אני מבטיח.MP3" preload="auto"></audio>
     <div class="audio-widget" id="audio-widget" onclick="toggleAudio()">
         <div class="audio-text-ring">
@@ -435,15 +430,14 @@
                 <form class="checkout-form" onsubmit="startPaymentProcess(event)" style="margin-top: 20px;">
                     <input type="text" id="order-name" placeholder="שם מלא" required>
                     <input type="tel" id="order-phone" placeholder="מספר טלפון להתקשרות" required>
-                    <!-- הוספת שדה המייל גם בתשלום -->
                     <input type="email" id="order-email" placeholder="כתובת מייל (לא חובה)">
-                    <button type="submit" class="pay-now-btn">מעבר לתשלום בנדרים פלוס</button>
+                    <button type="submit" class="pay-now-btn">מעבר לתשלום</button>
                 </form>
             </div>
 
-            <!-- הגדלנו כאן את גובה האייפריים כדי שיוצג לחצן ה"בצע תשלום" של נדרים פלוס -->
+            <!-- חלונית התשלום המוגדלת -->
             <div id="nedarim-iframe-container">
-                <iframe id="nedarim-iframe" src=""></iframe>
+                <iframe id="nedarim-iframe" src="" scrolling="yes"></iframe>
             </div>
 
             <div id="checkout-success-area" class="success-msg">
@@ -526,13 +520,13 @@
             event.preventDefault();
             const name = document.getElementById('order-name').value;
             const phone = document.getElementById('order-phone').value;
-            const email = document.getElementById('order-email').value; // משוך את כתובת המייל
+            const email = document.getElementById('order-email').value;
             
             if (finalOrderPrice <= 0) return alert("העגלה ריקה");
 
             window.currentOrderName = name;
             window.currentOrderPhone = phone;
-            window.currentOrderEmail = email; // שומרים את המייל
+            window.currentOrderEmail = email;
             
             let orderDetails = `<strong>פירוט ההזמנה:</strong><br><br>`;
             cart.forEach(item => { orderDetails += `- ${item.title} (כמות: ${item.qty}) = ${item.price * item.qty} ש"ח<br>`; });
@@ -541,7 +535,10 @@
 
             document.getElementById('checkout-form-area').style.display = 'none';
             const iframe = document.getElementById('nedarim-iframe');
-            iframe.src = `https://www.matara.pro/nedarimplus/iframe?S=YDMX&Amount=${finalOrderPrice}&ClientName=${encodeURIComponent(name)}&Phone=${encodeURIComponent(phone)}`;
+            
+            // חיבור למספר מוסד ישירות כדי שהסכום יינעל והכפתור יופיע
+            iframe.src = `https://www.matara.pro/nedarimplus/iframe?mosad=7018037&Amount=${finalOrderPrice}&ClientName=${encodeURIComponent(name)}&Phone=${encodeURIComponent(phone)}`;
+            
             document.getElementById('nedarim-iframe-container').style.display = 'block';
         }
 
@@ -577,12 +574,12 @@
                         type: 'order',
                         name: window.currentOrderName,
                         phone: window.currentOrderPhone,
-                        email: window.currentOrderEmail, // שולח גם את המייל
+                        email: window.currentOrderEmail,
                         message: window.currentOrderDetails,
                         transactionId: transactionId
                     })
                 });
-            } catch(e) { console.error("שגיאה בשליחת המייל"); }
+            } catch(e) {}
             
             cart = [];
             updateCartUI();
@@ -601,7 +598,7 @@
                         type: 'contact',
                         name: document.getElementById('contact-name').value,
                         phone: document.getElementById('contact-phone').value,
-                        email: document.getElementById('contact-email').value, // שליחת שדה המייל
+                        email: document.getElementById('contact-email').value,
                         message: document.getElementById('contact-message').value
                     })
                 });
