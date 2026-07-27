@@ -4,14 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ספרי מוסר - פניני חיזוק</title>
-    <!-- אייקון האתר (Favicon) - ודא ששם הקובץ בגיטהאב זהה לחלוטין! -->
     <link rel="icon" href="הדמיה 5 מתוקנת.jpg" type="image/jpeg">
     
-    <!-- פונט -->
     <style>@import url('https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;700&display=swap');</style>
     
     <style>
-        /* הגדרות בסיס */
         body {
             font-family: 'Frank Ruhl Libre', 'Times New Roman', serif;
             background-color: #0d0d0d;
@@ -28,7 +25,6 @@
             --border-color: #333;
         }
         
-        /* אזור עליון - הדר */
         header {
             background: linear-gradient(to bottom, #151515, #000);
             text-align: center;
@@ -37,7 +33,6 @@
             position: relative;
         }
         
-        /* תמונת הגרי"ג (ימין) */
         .header-rabbi-img {
             position: absolute;
             top: 30px;
@@ -53,7 +48,6 @@
         }
         .header-rabbi-img:hover { transform: scale(1.05); }
 
-        /* קופסת טקסט האגרת (שמאל) */
         .header-igeret-text {
             position: absolute;
             top: 30px;
@@ -69,16 +63,8 @@
             text-align: center;
             line-height: 1.4;
         }
-        .header-igeret-text p {
-            font-size: 1.15rem;
-            margin: 0 0 10px 0;
-        }
-        .header-igeret-text .source {
-            font-size: 0.85rem;
-            color: #aaa;
-            display: block;
-            margin-top: 10px;
-        }
+        .header-igeret-text p { font-size: 1.15rem; margin: 0 0 10px 0; }
+        .header-igeret-text .source { font-size: 0.85rem; color: #aaa; display: block; margin-top: 10px; }
 
         header h1 {
             margin: 0 0 1rem 0;
@@ -86,45 +72,21 @@
             color: var(--gold);
             text-shadow: 0 2px 5px rgba(0,0,0,0.8);
         }
-        .legacy-text {
-            font-size: 1.5rem;
-            line-height: 1.6;
-            color: #ddd;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        .legacy-text strong {
-            color: var(--gold);
-            font-size: 1.7rem;
-        }
+        .legacy-text { font-size: 1.5rem; line-height: 1.6; color: #ddd; max-width: 600px; margin: 0 auto; }
+        .legacy-text strong { color: var(--gold); font-size: 1.7rem; }
         .reminder-phone {
-            margin-top: 1.5rem;
-            padding: 12px;
-            background: rgba(197, 160, 89, 0.1);
-            border: 1px solid var(--dark-gold);
-            display: inline-block;
-            border-radius: 5px;
-            font-weight: bold;
-            font-size: 1.4rem;
-            color: #fff;
+            margin-top: 1.5rem; padding: 12px; background: rgba(197, 160, 89, 0.1);
+            border: 1px solid var(--dark-gold); display: inline-block; border-radius: 5px;
+            font-weight: bold; font-size: 1.4rem; color: #fff;
         }
         
-        /* התאמה למסכים קטנים - תמונות למעלה ולמטה */
         @media (max-width: 1000px) {
-            .header-rabbi-img, .header-igeret-text {
-                position: static;
-                display: block;
-                margin: 0 auto 20px auto;
-            }
-            .header-igeret-text {
-                width: 80%;
-                max-width: 300px;
-            }
+            .header-rabbi-img, .header-igeret-text { position: static; display: block; margin: 0 auto 20px auto; }
+            .header-igeret-text { width: 80%; max-width: 300px; }
         }
 
         .container { max-width: 1100px; margin: 0 auto; padding: 2rem 1rem; }
         
-        /* רשימת ספרים */
         .books-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 3rem; }
         @media (max-width: 900px) { .books-row { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 500px) { .books-row { grid-template-columns: 1fr; } }
@@ -140,28 +102,14 @@
         }
         .pdf-preview-wrapper.book-size { height: 220px; }
         .pdf-preview-wrapper.free-size { height: 180px; background-color: #1a1a1a; }
-        
         .pdf-preview-wrapper img { width: 100%; height: 100%; object-fit: contain; }
         
-        /* פס אפור קבוע בתחתית התמונה במקום Hover */
         .preview-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(40, 40, 40, 0.85);
-            color: #ddd;
-            padding: 6px 0;
-            font-size: 1rem;
-            font-weight: normal;
-            font-family: sans-serif;
-            text-align: center;
-            border-top: 1px solid #555;
+            position: absolute; bottom: 0; left: 0; right: 0;
+            background: rgba(40, 40, 40, 0.85); color: #ddd; padding: 6px 0;
+            font-size: 1rem; font-weight: normal; font-family: sans-serif; text-align: center; border-top: 1px solid #555;
         }
-        .pdf-preview-wrapper:hover .preview-overlay {
-            background: rgba(60, 60, 60, 0.95);
-            color: #fff;
-        }
+        .pdf-preview-wrapper:hover .preview-overlay { background: rgba(60, 60, 60, 0.95); color: #fff; }
 
         .book-card h3 { color: var(--gold); margin: 0 0 10px 0; font-size: 1.6rem; }
         .price { font-size: 1.4rem; font-weight: bold; color: #fff; margin-top: 15px; padding-top: 10px; border-top: 1px dashed #444; }
@@ -221,12 +169,12 @@
 
         form { display: flex; flex-direction: column; gap: 15px; max-width: 500px; margin: 0 auto; }
         input, textarea { padding: 12px; background-color: #222; border: 1px solid #444; color: #fff; border-radius: 4px; font-family: inherit; }
-        button[type="submit"] { background: linear-gradient(to right, var(--dark-gold), var(--gold)); color: #000; border: none; padding: 15px; font-size: 1.3rem; font-weight: bold; cursor: pointer; border-radius: 4px; font-family: 'Frank Ruhl Libre', serif; }
+        button[type="submit"] { background: linear-gradient(to right, var(--dark-gold), var(--gold)); color: #000; border: none; padding: 15px; font-size: 1.3rem; font-weight: bold; cursor: pointer; border-radius: 4px; font-family: 'Frank Ruhl Libre', serif; transition: opacity 0.3s; }
+        button[type="submit"]:disabled { opacity: 0.7; cursor: not-allowed; }
 
         footer { text-align: center; padding: 2rem; margin-top: 3rem; background-color: #050505; color: #666; border-top: 1px solid #222; }
         .distributor { color: var(--gold); font-size: 1.2rem; margin-bottom: 1rem; }
         
-        /* נגן אודיו */
         .audio-widget { position: fixed; bottom: 30px; left: 30px; width: 140px; height: 140px; z-index: 1000; cursor: pointer; }
         .audio-text-ring { position: absolute; top: 0; left: 0; width: 100%; height: 100%; animation: spin 15s linear infinite; }
         .audio-text-ring svg { width: 100%; height: 100%; overflow: visible; }
@@ -243,55 +191,22 @@
         @keyframes spin { 100% { transform: rotate(360deg); } }
         @media (max-width: 768px) { .audio-widget { bottom: 20px; left: 10px; transform: scale(0.85); } }
 
-        /* חלונית צפה (Modal) לתצוגת ה-PDF (המקורית והמהירה) */
         .pdf-modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 9999;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(5px);
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.9); z-index: 9999; align-items: center; justify-content: center; backdrop-filter: blur(5px);
         }
         .pdf-modal.active { display: flex; }
-        .pdf-container {
-            width: 90%;
-            height: 90%;
-            background: #222;
-            position: relative;
-            border: 2px solid var(--gold);
-            border-radius: 8px;
-            box-shadow: 0 0 30px rgba(0,0,0,0.8);
-        }
-        .pdf-container iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            border-radius: 8px;
-        }
-        .close-pdf-btn {
-            position: absolute;
-            top: -45px;
-            right: 0;
-            color: #fff;
-            font-size: 35px;
-            cursor: pointer;
-            font-family: sans-serif;
-            background: none;
-            border: none;
-            transition: color 0.3s;
-        }
+        .pdf-container { width: 90%; height: 90%; background: #222; position: relative; border: 2px solid var(--gold); border-radius: 8px; box-shadow: 0 0 30px rgba(0,0,0,0.8); }
+        .pdf-container iframe { width: 100%; height: 100%; border: none; border-radius: 8px; }
+        .close-pdf-btn { position: absolute; top: -45px; right: 0; color: #fff; font-size: 35px; cursor: pointer; font-family: sans-serif; background: none; border: none; transition: color 0.3s; }
         .close-pdf-btn:hover { color: var(--gold); }
     </style>
 </head>
 <body>
 
     <header>
-        <!-- תמונת הגרי"ג בימין -->
         <img src="תמונה הגריג.jpg" alt="מורינו הגריג אדלשטיין זללהה" class="header-rabbi-img">
         
-        <!-- אגרת הטקסט המעוצבת בשמאל (חדש!) -->
         <div class="header-igeret-text">
             <p>"ואני מבטיח שכל מי שילמד<br>מוסר יהיה מאושר!<br>
             ומי שכבר לומד מוסר בוודאי<br>הוא כבר מאושר,<br>
@@ -309,7 +224,6 @@
     </header>
 
     <div class="container">
-        <!-- שורת הספרים הבודדים -->
         <div class="books-row">
             <div class="book-card">
                 <div class="pdf-preview-wrapper book-size" onclick="openPdfViewer('מסילת ישרים.pdf')">
@@ -360,7 +274,6 @@
             <div class="set-price">120 ₪</div>
         </div>
 
-        <!-- בקרוב -->
         <div class="coming-soon-wrapper">
             <div class="coming-soon-section">
                 <div class="coming-soon-ribbon">בקרוב!</div>
@@ -375,7 +288,6 @@
             </div>
         </div>
 
-        <!-- פריטים ללא עלות -->
         <div class="free-items-section">
             <h2>ניתן להשיג ללא עלות</h2>
             <div class="free-grid">
@@ -410,7 +322,6 @@
             </div>
         </div>
 
-        <!-- איסוף ומשלוחים -->
         <div class="pickup-info">
             <h3>מידע על משלוחים ונקודות איסוף</h3>
             <p><strong>המחירים המצוינים הינם ללא משלוח.</strong> ניתן לאסוף בתיאום מראש במוקדים הבאים:</p>
@@ -433,13 +344,20 @@
                     <svg viewBox="0 0 24 24"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg>
                     058-3285502
                 </a>
+                <!-- המספר שהוחזר -->
+                <a href="tel:0527648389" class="btn btn-phone">
+                    <svg viewBox="0 0 24 24"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg>
+                    052-7648389
+                </a>
                 <a href="mailto:6183444@gmail.com" class="btn btn-email">
                     <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
                     שליחת מייל
                 </a>
             </div>
             <p style="margin-bottom: 20px; font-family:sans-serif;">או השאירו פנייה להזמנה כאן (נשלח ישירות אלינו):</p>
-            <form onsubmit="showEmailError(event)">
+            
+            <!-- טופס ההזמנה עם הפונקציה החדשה -->
+            <form onsubmit="submitForm(event)">
                 <input type="text" name="name" placeholder="שם מלא" required>
                 <input type="tel" name="phone" placeholder="מספר טלפון" required>
                 <textarea name="message" rows="4" placeholder="אילו ספרים תרצו להזמין? אנא ציינו גם מהיכן תרצו לאסוף." required></textarea>
@@ -459,7 +377,6 @@
         <p id="dev-footer">פיתוח תשפ"ו</p>
     </footer>
 
-    <!-- נגן האודיו המרחף -->
     <audio id="rabbi-audio" src="אני מבטיח.MP3" preload="auto"></audio>
     <div class="audio-widget" id="audio-widget" onclick="toggleAudio()">
         <div class="audio-text-ring">
@@ -476,7 +393,6 @@
         </div>
     </div>
 
-    <!-- חלונית צפה (Modal) לתצוגת ה-PDF (המקורית והמהירה) -->
     <div class="pdf-modal" id="pdf-modal">
         <div class="pdf-container">
             <button class="close-pdf-btn" onclick="closePdfViewer()">×</button>
@@ -485,7 +401,7 @@
     </div>
 
     <script>
-        /* פונקציות לתצוגת ה-PDF - חזרה למנגנון ה-Iframe הפשוט והמהיר */
+        // תצוגת PDF
         function openPdfViewer(pdfUrl) {
             document.getElementById('pdf-frame').src = pdfUrl;
             document.getElementById('pdf-modal').classList.add('active');
@@ -504,9 +420,49 @@
         }
         audioEl.onended = function() { widgetEl.classList.remove('playing'); };
 
-        function showEmailError(event) {
-            event.preventDefault(); 
-            alert("שגיאה בשליחת המייל, אנא שלח מייל ישירות לכתובת: 6183444@gmail.com");
+        // שליחת הטופס ל-Webhook (למשל Make.com)
+        async function submitForm(event) {
+            event.preventDefault();
+            
+            const form = event.target;
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerText;
+            
+            // =========================================================================
+            // הכנס כאן את כתובת ה-Webhook שתיצור במערכת האוטומציה (לדוגמה Make.com)
+            // =========================================================================
+            const webhookUrl = 'הכנס_כאן_את_כתובת_הוובהוק_שלך'; 
+            
+            if (webhookUrl === 'הכנס_כאן_את_כתובת_הוובהוק_שלך') {
+                alert("המערכת מחכה לחיבור ה-Webhook. בינתיים תוכל לשלוח לנו הודעה בוואטסאפ או במייל.");
+                return;
+            }
+
+            submitBtn.innerText = 'שולח...';
+            submitBtn.disabled = true;
+
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+
+            try {
+                const response = await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    alert("פנייתך נשלחה בהצלחה! ניצור קשר בקרוב.");
+                    form.reset();
+                } else {
+                    alert("אירעה שגיאה בשליחה. אנא נסה שוב או פנה אלינו בוואטסאפ.");
+                }
+            } catch (error) {
+                alert("שגיאת תקשורת. אנא ודא חיבור לאינטרנט ונסה שוב.");
+            } finally {
+                submitBtn.innerText = originalText;
+                submitBtn.disabled = false;
+            }
         }
     </script>
 </body>
