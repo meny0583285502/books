@@ -147,6 +147,12 @@
         .success-msg h2 { color: #25D366; font-size: 2rem; margin-bottom: 10px; }
         .success-msg p { font-size: 1.3rem; color: #fff; }
 
+        /* תצוגת סכום נעולה מעל חלונית התשלום */
+        .amount-lock-display { display: none; text-align: center; background: #151515; border: 2px solid var(--gold); border-radius: 8px; padding: 14px; margin-top: 10px; font-family: sans-serif; }
+        .amount-lock-display .lbl { color: #ccc; font-size: 1rem; margin-bottom: 4px; }
+        .amount-lock-display .amt { color: var(--gold); font-size: 2rem; font-weight: bold; }
+        .amount-lock-display .lock-note { color: #888; font-size: 0.85rem; margin-top: 4px; }
+
         /* מסגרת האייפריים של התשלום */
         #nedarim-iframe-container { display: none; width: 100%; height: 900px; margin-top: 15px; border-radius: 8px; overflow: auto; border: 1px solid #444; background: #fff; -webkit-overflow-scrolling: touch; }
         #nedarim-iframe { width: 100%; height: 100%; border: none; }
@@ -436,9 +442,15 @@
                 </form>
             </div>
 
-            <!-- חלונית התשלום המעודכנת בקישור ישיר למניעת Mixed Content ולתצוגה תקינה של הכפתור -->
-            <div id="nedarim-iframe-container" style="display: none; width: 100%; height: 900px; margin-top: 15px; border-radius: 8px; overflow: auto; border: 1px solid #444; background: #fff; -webkit-overflow-scrolling: touch;">
-                <iframe id="nedarim-iframe" src="" style="width: 100%; height: 100%; border: none;"></iframe>
+            <!-- תצוגת הסכום הנעול - מוצג מעל חלונית התשלום, לא ניתן לעריכה -->
+            <div id="amount-lock-display" class="amount-lock-display">
+                <div class="lbl">סכום לתשלום:</div>
+                <div class="amt"><span id="amount-lock-value">0</span> ₪</div>
+                <div class="lock-note">(הסכום נעול ואינו ניתן לשינוי)</div>
+            </div>
+
+            <div id="nedarim-iframe-container">
+                <iframe id="nedarim-iframe" src=""></iframe>
             </div>
 
             <div id="checkout-success-area" class="success-msg">
@@ -451,6 +463,9 @@
 
     <script>
         const WEBHOOK_URL = 'https://old-glitter-dac3.meny85502.workers.dev/';
+
+        // קוד הדף השמור באזור האישי בנדרים פלוס (S=YDMX), מקושר למוסד 7018037
+        const NEDARIM_PAGE_CODE = 'YDMX';
 
         window.prices = {
             mesilat: 25,
@@ -511,6 +526,7 @@
         function openCheckout() {
             closeCart();
             document.getElementById('checkout-form-area').style.display = 'block';
+            document.getElementById('amount-lock-display').style.display = 'none';
             document.getElementById('nedarim-iframe-container').style.display = 'none';
             document.getElementById('checkout-success-area').style.display = 'none';
             document.getElementById('checkout-modal').classList.add('active');
@@ -535,10 +551,18 @@
             window.currentOrderDetails = orderDetails;
 
             document.getElementById('checkout-form-area').style.display = 'none';
-            
-            // יצירת הקישור המאובטח הישיר לאייפריים של נדרים פלוס למניעת תקלות Mixed Content ולנעילת הסכום
-            const iframeUrl = `https://www.matara.pro/nedarimplus/iframe?mosad=7018037&Amount=${finalOrderPrice}&ClientName=${encodeURIComponent(name)}&Phone=${encodeURIComponent(phone)}&Mail=${encodeURIComponent(email)}`;
-            
+
+            // מציגים את הסכום למעלה, נעול, לפני האייפריים
+            document.getElementById('amount-lock-value').innerText = finalOrderPrice;
+            document.getElementById('amount-lock-display').style.display = 'block';
+
+            // כתובת הדף השמור בנדרים פלוס (S=YDMX) - עם Amount נעול (AmountLock=1)
+            const iframeUrl = `https://www.matara.pro/nedarimplus/online/?S=${NEDARIM_PAGE_CODE}` +
+                `&Amount=${encodeURIComponent(finalOrderPrice)}&AmountLock=1` +
+                `&ClientName=${encodeURIComponent(name)}` +
+                `&Phone=${encodeURIComponent(phone)}` +
+                `&Mail=${encodeURIComponent(email)}`;
+
             document.getElementById('nedarim-iframe').src = iframeUrl;
             document.getElementById('nedarim-iframe-container').style.display = 'block';
         }
@@ -553,6 +577,7 @@
                     } else {
                         alert('התשלום לא הושלם. ' + (data.Message || ''));
                         document.getElementById('nedarim-iframe-container').style.display = 'none';
+                        document.getElementById('amount-lock-display').style.display = 'none';
                         document.getElementById('checkout-form-area').style.display = 'block';
                     }
                 }
@@ -565,6 +590,7 @@
 
         async function completeOrder(transactionId) {
             document.getElementById('nedarim-iframe-container').style.display = 'none';
+            document.getElementById('amount-lock-display').style.display = 'none';
             document.getElementById('checkout-success-area').style.display = 'block';
             
             try {
