@@ -68,7 +68,7 @@
         .qty-input { width: 40px; height: 30px; background: #222; color: #fff; border: none; text-align: center; font-size: 1.1rem; font-family: sans-serif; pointer-events: none; }
         .add-btn { background: var(--gold); color: #000; border: none; height: 32px; padding: 0 15px; border-radius: 4px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; transition: 0.3s; }
         .add-btn:hover { background: #fff; }
-        .add-btn svg { width: 18px; height: 18px; margin-right: 5px; fill: #000; }
+        .add-btn svg { width: 18px; height: 18px; margin-right: 5px; fill: currentColor; }
 
         .set-card { background: linear-gradient(145deg, #2a2a2a, #111); border: 2px solid var(--gold); padding: 2.5rem; text-align: center; border-radius: 8px; margin-bottom: 4rem; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         .set-img { max-width: 100%; height: auto; max-height: 350px; margin-bottom: 20px; object-fit: contain; }
@@ -94,6 +94,9 @@
         .btn-phone { background-color: #222; border: 1px solid var(--gold); }
         .btn-email { background-color: #444; border: 1px solid #777; }
         
+        .btn-donate { display: inline-block; background: linear-gradient(to right, #8b0000, #b22222); color: #fff; padding: 15px 40px; font-size: 1.5rem; border-radius: 5px; text-decoration: none; font-weight: bold; border: 1px solid #ff7f7f; box-shadow: 0 4px 15px rgba(139, 0, 0, 0.5); transition: 0.3s; }
+        .btn-donate:hover { background: linear-gradient(to right, #b22222, #cd5c5c); transform: scale(1.05); }
+
         footer { text-align: center; padding: 2rem; margin-top: 3rem; background-color: #050505; color: #666; border-top: 1px solid #222; }
 
         .audio-widget { position: fixed; bottom: 30px; left: 30px; width: 140px; height: 140px; z-index: 1000; cursor: pointer; }
@@ -118,7 +121,7 @@
         .pdf-container { width: 90%; max-width: 900px; height: 90%; padding: 0; overflow: hidden; }
         .pdf-container iframe { width: 100%; height: 100%; border: none; border-radius: 8px; }
 
-        /* עיצוב עגלת קניות */
+        /* עגלת קניות */
         .cart-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding: 10px 0; font-family: sans-serif; }
         .cart-item-title { flex: 1; color: var(--gold); font-size: 1.2rem; font-family: 'Frank Ruhl Libre', serif;}
         .cart-item-details { display: flex; align-items: center; gap: 15px; }
@@ -128,13 +131,16 @@
         .checkout-btn { display: block; width: 100%; background: linear-gradient(to right, #2a2a2a, #000); color: var(--gold); border: 2px solid var(--gold); padding: 15px; font-size: 1.3rem; font-weight: bold; cursor: pointer; border-radius: 4px; font-family: 'Frank Ruhl Libre', serif; transition: 0.3s; margin-top: 20px; }
         .checkout-btn:hover { background: var(--gold); color: #000; }
 
-        /* טפסים */
+        /* טפסים - כולל יישור טלפון */
         .checkout-form { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
         .checkout-form input, .checkout-form textarea { padding: 12px; background-color: #222; border: 1px solid #444; color: #fff; border-radius: 4px; font-family: inherit; font-size: 1.1rem;}
         .checkout-form input:focus, .checkout-form textarea:focus { outline: none; border-color: var(--gold); }
         .checkout-note { color: #f44336; font-size: 1rem; text-align: center; margin-bottom: 10px; font-family: sans-serif; }
         .pay-now-btn { background: linear-gradient(to right, var(--dark-gold), var(--gold)); color: #000; border: none; padding: 15px; font-size: 1.4rem; font-weight: bold; cursor: pointer; border-radius: 4px; font-family: 'Frank Ruhl Libre', serif; transition: opacity 0.3s; }
         .pay-now-btn:disabled { opacity: 0.7; cursor: not-allowed; }
+
+        /* יישור שמאלה למספרי טלפון */
+        #order-phone, #contact-phone { text-align: left; direction: ltr; }
 
         /* מסך הצלחה */
         .success-msg { display: none; text-align: center; padding: 30px 10px; }
@@ -144,6 +150,14 @@
         /* מסגרת האייפריים של התשלום */
         #nedarim-iframe-container { display: none; width: 100%; height: 500px; margin-top: 15px; border-radius: 8px; overflow: hidden; border: 1px solid #444; }
         #nedarim-iframe { width: 100%; height: 100%; border: none; }
+
+        /* פאנל פיתוח מוסתר */
+        #admin-panel { display: none; background: #111; border: 2px dashed var(--gold); padding: 2rem; max-width: 600px; margin: 2rem auto; border-radius: 8px; }
+        #admin-panel h2 { color: var(--gold); text-align: center; margin-top: 0; }
+        .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+        .admin-grid div { display: flex; flex-direction: column; }
+        .admin-grid label { color: #ccc; margin-bottom: 5px; font-family: sans-serif; }
+        .admin-grid input { padding: 8px; background: #222; border: 1px solid #444; color: #fff; }
     </style>
 </head>
 <body>
@@ -168,6 +182,7 @@
     </header>
 
     <div class="container">
+        <!-- ספרי מוסר בודדים -->
         <div class="books-row">
             <div class="book-card">
                 <div class="pdf-preview-wrapper book-size" onclick="openPdfViewer('מסילת ישרים.pdf')">
@@ -176,14 +191,14 @@
                 <div>
                     <h3>מסילת ישרים</h3>
                     <div class="price-cart-area">
-                        <div class="price">25 ₪</div>
+                        <div class="price" id="disp-price-mesilat">25 ₪</div>
                         <div class="add-to-cart-controls">
                             <div class="qty-selector">
                                 <button class="qty-btn" onclick="changeLocalQty(this, -1)">-</button>
                                 <input type="text" class="qty-input" value="1" readonly>
                                 <button class="qty-btn" onclick="changeLocalQty(this, 1)">+</button>
                             </div>
-                            <button class="add-btn" onclick="addToCart('mesilat', 'מסילת ישרים', 25, this)">
+                            <button class="add-btn" onclick="addToCart('mesilat', 'מסילת ישרים', this)">
                                 <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg> הוסף
                             </button>
                         </div>
@@ -197,14 +212,14 @@
                 <div>
                     <h3>שערי תשובה</h3>
                     <div class="price-cart-area">
-                        <div class="price">25 ₪</div>
+                        <div class="price" id="disp-price-shaarei">25 ₪</div>
                         <div class="add-to-cart-controls">
                             <div class="qty-selector">
                                 <button class="qty-btn" onclick="changeLocalQty(this, -1)">-</button>
                                 <input type="text" class="qty-input" value="1" readonly>
                                 <button class="qty-btn" onclick="changeLocalQty(this, 1)">+</button>
                             </div>
-                            <button class="add-btn" onclick="addToCart('shaarei', 'שערי תשובה', 25, this)">
+                            <button class="add-btn" onclick="addToCart('shaarei', 'שערי תשובה', this)">
                                 <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg> הוסף
                             </button>
                         </div>
@@ -218,14 +233,14 @@
                 <div>
                     <h3>ארחות צדיקים</h3>
                     <div class="price-cart-area">
-                        <div class="price">25 ₪</div>
+                        <div class="price" id="disp-price-orchot">25 ₪</div>
                         <div class="add-to-cart-controls">
                             <div class="qty-selector">
                                 <button class="qty-btn" onclick="changeLocalQty(this, -1)">-</button>
                                 <input type="text" class="qty-input" value="1" readonly>
                                 <button class="qty-btn" onclick="changeLocalQty(this, 1)">+</button>
                             </div>
-                            <button class="add-btn" onclick="addToCart('orchot', 'ארחות צדיקים', 25, this)">
+                            <button class="add-btn" onclick="addToCart('orchot', 'ארחות צדיקים', this)">
                                 <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg> הוסף
                             </button>
                         </div>
@@ -239,14 +254,14 @@
                 <div>
                     <h3>חובות הלבבות</h3>
                     <div class="price-cart-area">
-                        <div class="price">50 ₪</div>
+                        <div class="price" id="disp-price-chovot">50 ₪</div>
                         <div class="add-to-cart-controls">
                             <div class="qty-selector">
                                 <button class="qty-btn" onclick="changeLocalQty(this, -1)">-</button>
                                 <input type="text" class="qty-input" value="1" readonly>
                                 <button class="qty-btn" onclick="changeLocalQty(this, 1)">+</button>
                             </div>
-                            <button class="add-btn" onclick="addToCart('chovot', 'חובות הלבבות', 50, this)">
+                            <button class="add-btn" onclick="addToCart('chovot', 'חובות הלבבות', this)">
                                 <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg> הוסף
                             </button>
                         </div>
@@ -255,19 +270,21 @@
             </div>
         </div>
 
+        <!-- הסט המלא -->
         <div class="set-card">
             <img src="הדמיה כל הסט.jpg" alt="סט ספרי המוסר המלא" class="set-img">
             <h2>סט ספרי המוסר המלא</h2>
             <p style="font-size: 1.2rem; color:#ccc;">כל הספרים במארז מהודר</p>
+            
             <div class="price-cart-area" style="border:none; margin-top:0;">
-                <div class="set-price" style="margin-bottom: 20px;">120 ₪</div>
+                <div class="set-price" id="disp-price-fullset" style="margin-bottom: 20px;">120 ₪</div>
                 <div class="add-to-cart-controls" style="justify-content: center;">
                     <div class="qty-selector">
                         <button class="qty-btn" onclick="changeLocalQty(this, -1)">-</button>
                         <input type="text" class="qty-input" value="1" readonly>
                         <button class="qty-btn" onclick="changeLocalQty(this, 1)">+</button>
                     </div>
-                    <button class="add-btn" onclick="addToCart('fullset', 'סט ספרי מוסר (מלא)', 120, this)">
+                    <button class="add-btn" onclick="addToCart('fullset', 'סט ספרי מוסר (מלא)', this)">
                         <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg> הוסף לעגלה
                     </button>
                 </div>
@@ -335,8 +352,8 @@
                 <a href="tel:0583285502" class="btn btn-phone">
                     <svg viewBox="0 0 24 24"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg> 058-3285502
                 </a>
-                <a href="mailto:anubanyak.musar@gmail.com" class="btn btn-email">
-                    <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg> שליחת מייל
+                <a href="tel:0527648389" class="btn btn-phone">
+                    <svg viewBox="0 0 24 24"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg> 052-7648389
                 </a>
             </div>
             
@@ -347,6 +364,25 @@
                 <textarea id="contact-message" rows="3" placeholder="תוכן הפנייה..." required></textarea>
                 <button type="submit" class="pay-now-btn" id="contact-btn">שלח פנייה</button>
             </form>
+            
+            <div style="text-align: center; margin-top: 3rem;">
+                <a href="https://www.matara.pro/nedarimplus/online/?S=qPTl" target="_blank" class="btn-donate">
+                    לתרומות (קבלה 46) לחצו כאן
+                </a>
+            </div>
+        </div>
+        
+        <!-- פאנל ניהול מחירים (מוסתר כברירת מחדל) -->
+        <div id="admin-panel">
+            <h2>ניהול מחירים - מצב פיתוח</h2>
+            <div class="admin-grid">
+                <div><label>מסילת ישרים:</label> <input type="number" id="admin-p-mesilat" value="25"></div>
+                <div><label>שערי תשובה:</label> <input type="number" id="admin-p-shaarei" value="25"></div>
+                <div><label>ארחות צדיקים:</label> <input type="number" id="admin-p-orchot" value="25"></div>
+                <div><label>חובות הלבבות:</label> <input type="number" id="admin-p-chovot" value="50"></div>
+                <div style="grid-column: 1 / -1;"><label>סט מלא:</label> <input type="number" id="admin-p-fullset" value="120"></div>
+            </div>
+            <button onclick="updatePrices()" class="pay-now-btn" style="width:100%;">עדכן מחירים באתר</button>
         </div>
     </div>
 
@@ -419,22 +455,33 @@
     </div>
 
     <script>
-        // כתובת ה-Worker הקבועה
+        // כתובת ה-Worker של Cloudflare
         const WEBHOOK_URL = 'https://old-glitter-dac3.meny85502.workers.dev/';
 
-        // --- עגלת קניות ---
+        // מחירי הספרים - מוגדרים במשתנה גלובלי כדי שתוכל לשנות אותם דרך פאנל הפיתוח
+        window.prices = {
+            mesilat: 25,
+            shaarei: 25,
+            orchot: 25,
+            chovot: 50,
+            fullset: 120
+        };
+
         let cart = [];
         let finalOrderPrice = 0;
 
+        // שינוי כמות בבורר (+-)
         function changeLocalQty(btn, delta) {
             let input = btn.parentElement.querySelector('.qty-input');
             let newVal = parseInt(input.value) + delta;
             if(newVal >= 1) input.value = newVal;
         }
 
-        function addToCart(id, title, price, btnElement) {
+        // הוספה לעגלה - לוקח את המחיר מהמשתנה הגלובלי
+        function addToCart(id, title, btnElement) {
             let qtyInput = btnElement.parentElement.querySelector('.qty-input');
             let qty = parseInt(qtyInput.value);
+            let price = window.prices[id];
             
             let existingItem = cart.find(item => item.id === id);
             if(existingItem) existingItem.qty += qty;
@@ -443,10 +490,10 @@
             qtyInput.value = 1; 
             updateCartUI();
             
-            let originalText = btnElement.innerHTML;
+            // הפיכת הכפתור לירוק וקבוע (נוסף)
             btnElement.innerHTML = '✓ נוסף';
             btnElement.style.background = '#25D366';
-            setTimeout(() => { btnElement.innerHTML = originalText; btnElement.style.background = ''; }, 1500);
+            btnElement.style.color = '#000';
         }
 
         function updateCartUI() {
@@ -480,8 +527,7 @@
         }
         function closeCheckout() { document.getElementById('checkout-modal').classList.remove('active'); }
 
-
-        // --- תהליך התשלום (נדרים פלוס באייפריים) ---
+        // תהליך התשלום
         function startPaymentProcess(event) {
             event.preventDefault();
             const name = document.getElementById('order-name').value;
@@ -489,7 +535,6 @@
             
             if (finalOrderPrice <= 0) return alert("העגלה ריקה");
 
-            // שמירת נתונים לשליחה אחרי אישור
             window.currentOrderName = name;
             window.currentOrderPhone = phone;
             let orderDetails = `<strong>פירוט ההזמנה:</strong><br><br>`;
@@ -497,45 +542,39 @@
             orderDetails += `<br><strong>סה"כ שולם: ${finalOrderPrice} ש"ח</strong>`;
             window.currentOrderDetails = orderDetails;
 
-            // הסתרת הטופס, פתיחת האייפריים של נדרים פלוס
             document.getElementById('checkout-form-area').style.display = 'none';
-            
             const iframe = document.getElementById('nedarim-iframe');
-            // יצירת כתובת לאייפריים של נדרים פלוס
-            iframe.src = `https://www.matara.pro/nedarimplus/iframe?mosad=7018037&Amount=${finalOrderPrice}&ClientName=${encodeURIComponent(name)}&Phone=${encodeURIComponent(phone)}`;
-            
+            // שליחה ל-Nedarim Plus Iframe עם הפרטים והסכום הדינמי
+            iframe.src = `https://www.matara.pro/nedarimplus/iframe?S=YDMX&Amount=${finalOrderPrice}&ClientName=${encodeURIComponent(name)}&Phone=${encodeURIComponent(phone)}`;
             document.getElementById('nedarim-iframe-container').style.display = 'block';
         }
 
-        // האזנה לתשובות מהאייפריים של נדרים פלוס
+        // המתנה לאישור מחלון ה-Iframe של נדרים פלוס
         window.addEventListener("message", function(event) {
             if (event.origin !== "https://www.matara.pro" && event.origin !== "https://matara.pro") return;
-            
             try {
                 var data = JSON.parse(event.data);
                 if (data.Name === 'TransactionResponse') {
                     if (data.Status === 'Success' || data.Status === 'OK' || data.TransactionId) {
                         completeOrder(data.TransactionId || 'אושר');
                     } else {
-                        alert('התשלום לא צלח. הודעה מהמערכת: ' + (data.Message || ''));
+                        alert('התשלום לא הושלם. ' + (data.Message || ''));
                         document.getElementById('nedarim-iframe-container').style.display = 'none';
                         document.getElementById('checkout-form-area').style.display = 'block';
                     }
                 }
             } catch(e) {
-                // למקרה שההודעה אינה אובייקט תקין
                 if (typeof event.data === 'string' && (event.data.includes('Success') || event.data.includes('OK'))) {
                     completeOrder('אושר');
                 }
             }
         });
 
-        // פונקציה שנקראת רק כשהתשלום באמת עבר
+        // פונקציית סיום ההזמנה ושליחת המייל (רק לאחר תשלום)
         async function completeOrder(transactionId) {
             document.getElementById('nedarim-iframe-container').style.display = 'none';
             document.getElementById('checkout-success-area').style.display = 'block';
             
-            // שליחת המייל ברקע ל-Cloudflare Worker רק אחרי אישור
             try {
                 await fetch(WEBHOOK_URL, {
                     method: 'POST',
@@ -548,13 +587,13 @@
                         transactionId: transactionId
                     })
                 });
-            } catch(e) {}
+            } catch(e) { console.error("שגיאה בשליחת המייל"); }
             
             cart = [];
             updateCartUI();
         }
 
-        // --- פנייה כללית (צור קשר) ---
+        // שליחת פנייה (צור קשר רגיל)
         async function submitContact(event) {
             event.preventDefault();
             const btn = document.getElementById('contact-btn');
@@ -575,13 +614,51 @@
                     alert("הפנייה נשלחה בהצלחה!");
                     event.target.reset();
                 } else {
-                    alert("שגיאה במערכת, נסו לפנות דרך הוואטסאפ.");
+                    alert("שגיאה במערכת המיילים, נסו לפנות דרך הוואטסאפ.");
                 }
             } catch (error) {
-                alert("שגיאת תקשורת.");
+                alert("שגיאת תקשורת. בדקו את החיבור לאינטרנט.");
             } finally {
                 btn.innerText = 'שלח פנייה'; btn.disabled = false;
             }
+        }
+
+        // לוגיקת פאנל מפתחים (ניהול מחירים)
+        let clickCount = 0;
+        let clickTimer;
+        document.getElementById('dev-footer').addEventListener('click', function() {
+            clickCount++;
+            clearTimeout(clickTimer);
+            clickTimer = setTimeout(() => { clickCount = 0; }, 2000);
+
+            if (clickCount === 3) {
+                clickCount = 0;
+                let passcode = prompt("אנא הזן קוד פיתוח:");
+                if (passcode === "5502") {
+                    let panel = document.getElementById('admin-panel');
+                    panel.style.display = 'block';
+                    panel.scrollIntoView({ behavior: 'smooth' });
+                } else if (passcode !== null) {
+                    alert("קוד שגוי");
+                }
+            }
+        });
+
+        // עדכון המחירים מפאנל המפתחים
+        function updatePrices() {
+            window.prices.mesilat = parseInt(document.getElementById('admin-p-mesilat').value) || 0;
+            window.prices.shaarei = parseInt(document.getElementById('admin-p-shaarei').value) || 0;
+            window.prices.orchot = parseInt(document.getElementById('admin-p-orchot').value) || 0;
+            window.prices.chovot = parseInt(document.getElementById('admin-p-chovot').value) || 0;
+            window.prices.fullset = parseInt(document.getElementById('admin-p-fullset').value) || 0;
+
+            document.getElementById('disp-price-mesilat').innerText = window.prices.mesilat + ' ₪';
+            document.getElementById('disp-price-shaarei').innerText = window.prices.shaarei + ' ₪';
+            document.getElementById('disp-price-orchot').innerText = window.prices.orchot + ' ₪';
+            document.getElementById('disp-price-chovot').innerText = window.prices.chovot + ' ₪';
+            document.getElementById('disp-price-fullset').innerText = window.prices.fullset + ' ₪';
+            
+            alert('המחירים עודכנו בהצלחה! (יוחלו בהזמנות הבאות שיתווספו לעגלה)');
         }
 
         // --- לוגיקת PDF ואודיו ---
