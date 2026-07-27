@@ -114,7 +114,7 @@
         /* מודלים כלליים */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); z-index: 9999; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
         .modal-overlay.active { display: flex; }
-        .modal-box { width: 90%; max-width: 500px; background: #1a1a1a; position: relative; border: 2px solid var(--gold); border-radius: 8px; box-shadow: 0 0 30px rgba(0,0,0,0.8); padding: 2rem; max-height: 85vh; overflow-y: auto; }
+        .modal-box { width: 90%; max-width: 500px; background: #1a1a1a; position: relative; border: 2px solid var(--gold); border-radius: 8px; box-shadow: 0 0 30px rgba(0,0,0,0.8); padding: 2rem; max-height: 90vh; overflow-y: auto; }
         .close-modal-btn { position: absolute; top: 10px; right: 15px; color: #fff; font-size: 30px; cursor: pointer; background: none; border: none; transition: 0.3s; z-index: 100; }
         .close-modal-btn:hover { color: var(--gold); }
         
@@ -147,8 +147,8 @@
         .success-msg h2 { color: #25D366; font-size: 2rem; margin-bottom: 10px; }
         .success-msg p { font-size: 1.3rem; color: #fff; }
 
-        /* מסגרת האייפריים של התשלום - הוגדלה כדי לחשוף את כפתור "בצע תשלום" */
-        #nedarim-iframe-container { display: none; width: 100%; height: 800px; margin-top: 15px; border-radius: 8px; overflow: hidden; border: 1px solid #444; background: #fff; }
+        /* מסגרת האייפריים של התשלום */
+        #nedarim-iframe-container { display: none; width: 100%; height: 900px; margin-top: 15px; border-radius: 8px; overflow: auto; border: 1px solid #444; background: #fff; -webkit-overflow-scrolling: touch; }
         #nedarim-iframe { width: 100%; height: 100%; border: none; }
 
         /* פאנל פיתוח מוסתר */
@@ -436,17 +436,9 @@
                 </form>
             </div>
 
-            <!-- הגדלת החלונית ושימוש בטופס נסתר לפתיחה מדויקת של פרטי התשלום בנדרים פלוס -->
+            <!-- חלונית התשלום המעודכנת בקישור ישיר למניעת Mixed Content ולתצוגה תקינה של הכפתור -->
             <div id="nedarim-iframe-container" style="display: none; width: 100%; height: 900px; margin-top: 15px; border-radius: 8px; overflow: auto; border: 1px solid #444; background: #fff; -webkit-overflow-scrolling: touch;">
-                <iframe id="nedarim-iframe" name="nedarim-iframe" src="" style="width: 100%; height: 100%; border: none;"></iframe>
-                <form id="nedarim-form" action="https://www.matara.pro/nedarimplus/online/" method="POST" target="nedarim-iframe" style="display:none;">
-                    <input type="hidden" name="Mosad" value="7018037">
-                    <input type="hidden" name="Amount" id="nedarim-amount" value="">
-                    <input type="hidden" name="ClientName" id="nedarim-clientname" value="">
-                    <input type="hidden" name="Phone" id="nedarim-phone" value="">
-                    <input type="hidden" name="Email" id="nedarim-email" value="">
-                    <input type="hidden" name="ForceAmount" value="1">
-                </form>
+                <iframe id="nedarim-iframe" src="" style="width: 100%; height: 100%; border: none;"></iframe>
             </div>
 
             <div id="checkout-success-area" class="success-msg">
@@ -544,14 +536,11 @@
 
             document.getElementById('checkout-form-area').style.display = 'none';
             
-            // מילוי הטופס הנסתר ושליחתו אל האייפריים של נדרים פלוס
-            document.getElementById('nedarim-amount').value = finalOrderPrice;
-            document.getElementById('nedarim-clientname').value = name;
-            document.getElementById('nedarim-phone').value = phone;
-            document.getElementById('nedarim-email').value = email;
+            // יצירת הקישור המאובטח הישיר לאייפריים של נדרים פלוס למניעת תקלות Mixed Content ולנעילת הסכום
+            const iframeUrl = `https://www.matara.pro/nedarimplus/iframe?mosad=7018037&Amount=${finalOrderPrice}&ClientName=${encodeURIComponent(name)}&Phone=${encodeURIComponent(phone)}&Mail=${encodeURIComponent(email)}`;
             
+            document.getElementById('nedarim-iframe').src = iframeUrl;
             document.getElementById('nedarim-iframe-container').style.display = 'block';
-            document.getElementById('nedarim-form').submit();
         }
 
         window.addEventListener("message", function(event) {
