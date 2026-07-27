@@ -4,19 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ספרי מוסר - פניני חיזוק</title>
-    <!-- אייקון האתר (Favicon) -->
-    <link rel="icon" href="הדמית 5 מתוקנת.jpg" type="image/jpeg">
+    <!-- אייקון האתר (Favicon) - ודא ששם הקובץ בגיטהאב זהה לחלוטין! -->
+    <link rel="icon" href="הדמיה 5 מתוקנת.jpg" type="image/jpeg">
     
     <!-- פונט -->
     <style>@import url('https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;700&display=swap');</style>
     
-    <!-- ספריית PDF.js לדפדוף אופקי -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
-    <script>
-        // הגדרת נתיב העבודה של הספרייה
-        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
-    </script>
-
     <style>
         /* הגדרות בסיס */
         body {
@@ -60,21 +53,32 @@
         }
         .header-rabbi-img:hover { transform: scale(1.05); }
 
-        /* תמונת האגרת (שמאל) */
-        .header-igeret-img {
+        /* קופסת טקסט האגרת (שמאל) */
+        .header-igeret-text {
             position: absolute;
             top: 30px;
             left: 40px;
-            width: 180px;
-            height: 240px;
+            width: 220px;
             border: 1px solid var(--dark-gold);
             border-radius: 8px;
-            object-fit: contain;
+            background: linear-gradient(to bottom, #1a1a1a, #0a0a0a);
+            padding: 15px;
             box-shadow: 0 8px 25px rgba(0,0,0,0.8);
-            background-color: #eaeaea;
-            transition: transform 0.3s ease;
+            font-family: 'Frank Ruhl Libre', serif;
+            color: var(--gold);
+            text-align: center;
+            line-height: 1.4;
         }
-        .header-igeret-img:hover { transform: scale(1.05); }
+        .header-igeret-text p {
+            font-size: 1.15rem;
+            margin: 0 0 10px 0;
+        }
+        .header-igeret-text .source {
+            font-size: 0.85rem;
+            color: #aaa;
+            display: block;
+            margin-top: 10px;
+        }
 
         header h1 {
             margin: 0 0 1rem 0;
@@ -107,12 +111,14 @@
         
         /* התאמה למסכים קטנים - תמונות למעלה ולמטה */
         @media (max-width: 1000px) {
-            .header-rabbi-img, .header-igeret-img {
+            .header-rabbi-img, .header-igeret-text {
                 position: static;
                 display: block;
                 margin: 0 auto 20px auto;
-                width: 200px;
-                height: 260px;
+            }
+            .header-igeret-text {
+                width: 80%;
+                max-width: 300px;
             }
         }
 
@@ -136,12 +142,26 @@
         .pdf-preview-wrapper.free-size { height: 180px; background-color: #1a1a1a; }
         
         .pdf-preview-wrapper img { width: 100%; height: 100%; object-fit: contain; }
+        
+        /* פס אפור קבוע בתחתית התמונה במקום Hover */
         .preview-overlay {
-            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(80, 80, 80, 0.85); color: #fff; display: flex; align-items: center; justify-content: center;
-            font-size: 1.4rem; font-weight: bold; font-family: sans-serif; opacity: 0; transition: opacity 0.3s ease;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(40, 40, 40, 0.85);
+            color: #ddd;
+            padding: 6px 0;
+            font-size: 1rem;
+            font-weight: normal;
+            font-family: sans-serif;
+            text-align: center;
+            border-top: 1px solid #555;
         }
-        .pdf-preview-wrapper:hover .preview-overlay { opacity: 1; }
+        .pdf-preview-wrapper:hover .preview-overlay {
+            background: rgba(60, 60, 60, 0.95);
+            color: #fff;
+        }
 
         .book-card h3 { color: var(--gold); margin: 0 0 10px 0; font-size: 1.6rem; }
         .price { font-size: 1.4rem; font-weight: bold; color: #fff; margin-top: 15px; padding-top: 10px; border-top: 1px dashed #444; }
@@ -223,59 +243,44 @@
         @keyframes spin { 100% { transform: rotate(360deg); } }
         @media (max-width: 768px) { .audio-widget { bottom: 20px; left: 10px; transform: scale(0.85); } }
 
-        /* חלונית PDF - דפדוף אופקי משופר */
+        /* חלונית צפה (Modal) לתצוגת ה-PDF (המקורית והמהירה) */
         .pdf-modal {
             display: none;
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.95);
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.9);
             z-index: 9999;
-            align-items: center; justify-content: center;
+            align-items: center;
+            justify-content: center;
             backdrop-filter: blur(5px);
         }
-        .pdf-modal.active { display: flex; flex-direction: column; }
-        
-        .pdf-controls {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-            padding: 15px;
-            background: #111;
+        .pdf-modal.active { display: flex; }
+        .pdf-container {
+            width: 90%;
+            height: 90%;
+            background: #222;
+            position: relative;
+            border: 2px solid var(--gold);
+            border-radius: 8px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+        }
+        .pdf-container iframe {
             width: 100%;
-            border-bottom: 2px solid var(--gold);
-            direction: rtl;
+            height: 100%;
+            border: none;
+            border-radius: 8px;
         }
-        .pdf-controls button {
-            background: linear-gradient(to bottom, var(--dark-gold), var(--gold));
-            color: #000;
-            border: none; padding: 10px 20px; border-radius: 4px;
-            font-size: 1.1rem; font-weight: bold; cursor: pointer;
-            font-family: 'Frank Ruhl Libre', serif;
-        }
-        .pdf-controls button:disabled { background: #444; color: #777; cursor: not-allowed; }
-        .pdf-controls span { color: #fff; font-size: 1.2rem; font-family: sans-serif; }
-        
-        .pdf-canvas-container {
-            flex: 1;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: auto;
-            padding: 20px;
-        }
-        #pdf-render {
-            max-width: 100%;
-            height: auto;
-            max-height: 80vh;
-            box-shadow: 0 0 20px rgba(197, 160, 89, 0.3);
-            border-radius: 4px;
-        }
-        
         .close-pdf-btn {
-            position: absolute; top: 10px; left: 20px;
-            color: #fff; font-size: 40px; cursor: pointer; font-family: sans-serif; background: none; border: none; transition: color 0.3s;
-            z-index: 10000;
+            position: absolute;
+            top: -45px;
+            right: 0;
+            color: #fff;
+            font-size: 35px;
+            cursor: pointer;
+            font-family: sans-serif;
+            background: none;
+            border: none;
+            transition: color 0.3s;
         }
         .close-pdf-btn:hover { color: var(--gold); }
     </style>
@@ -286,8 +291,13 @@
         <!-- תמונת הגרי"ג בימין -->
         <img src="תמונה הגריג.jpg" alt="מורינו הגריג אדלשטיין זללהה" class="header-rabbi-img">
         
-        <!-- תמונת האגרת בשמאל (חדש!) -->
-        <img src="image_ca8f1a.png" alt="הבטחת מורינו" class="header-igeret-img">
+        <!-- אגרת הטקסט המעוצבת בשמאל (חדש!) -->
+        <div class="header-igeret-text">
+            <p>"ואני מבטיח שכל מי שילמד<br>מוסר יהיה מאושר!<br>
+            ומי שכבר לומד מוסר בוודאי<br>הוא כבר מאושר,<br>
+            ומי שעדיין אינו לומד אם<br>יתחיל בכל יום ללמוד מוסר<br>קצת, יחיה חיים<br>מאושרים!"</p>
+            <span class="source">(מתוך שיחת חג, חול המועד סוכות, תשע"ח)</span>
+        </div>
 
         <h1>ספרי מוסר - פניני חיזוק</h1>
         <div class="legacy-text">
@@ -304,7 +314,7 @@
             <div class="book-card">
                 <div class="pdf-preview-wrapper book-size" onclick="openPdfViewer('מסילת ישרים.pdf')">
                     <img src="מסילת ישרים.jpg" alt="מסילת ישרים">
-                    <div class="preview-overlay">לחץ כאן להצגה</div>
+                    <div class="preview-overlay">לחץ להצגה</div>
                 </div>
                 <div>
                     <h3>מסילת ישרים</h3>
@@ -314,7 +324,7 @@
             <div class="book-card">
                 <div class="pdf-preview-wrapper book-size" onclick="openPdfViewer('שערי תשובה.pdf')">
                     <img src="שערי תשובה.jpg" alt="שערי תשובה">
-                    <div class="preview-overlay">לחץ כאן להצגה</div>
+                    <div class="preview-overlay">לחץ להצגה</div>
                 </div>
                 <div>
                     <h3>שערי תשובה</h3>
@@ -324,7 +334,7 @@
             <div class="book-card">
                 <div class="pdf-preview-wrapper book-size" onclick="openPdfViewer('ארחות צדיקים.pdf')">
                     <img src="ארחות צדיקים.jpg" alt="ארחות צדיקים">
-                    <div class="preview-overlay">לחץ כאן להצגה</div>
+                    <div class="preview-overlay">לחץ להצגה</div>
                 </div>
                 <div>
                     <h3>ארחות צדיקים</h3>
@@ -334,7 +344,7 @@
             <div class="book-card">
                 <div class="pdf-preview-wrapper book-size" onclick="openPdfViewer('חובות הלבבות.pdf')">
                     <img src="חובות הלבבות.jpg" alt="חובות הלבבות">
-                    <div class="preview-overlay">לחץ כאן להצגה</div>
+                    <div class="preview-overlay">לחץ להצגה</div>
                 </div>
                 <div>
                     <h3>חובות הלבבות</h3>
@@ -372,28 +382,28 @@
                 <div class="free-card">
                     <div class="pdf-preview-wrapper free-size" onclick="openPdfViewer('שער הבטחון.pdf')">
                         <img src="שער הבטחון.jpg" alt="שער הביטחון">
-                        <div class="preview-overlay">לחץ כאן להצגה</div>
+                        <div class="preview-overlay">לחץ להצגה</div>
                     </div>
                     <span>שער הביטחון - כריכה רכה</span>
                 </div>
                 <div class="free-card">
                     <div class="pdf-preview-wrapper free-size" onclick="openPdfViewer('אגרת הרמבן.pdf')">
                         <img src="אגרת הרמבן.jpg" alt="אגרת הרמבן">
-                        <div class="preview-overlay">לחץ כאן להצגה</div>
+                        <div class="preview-overlay">לחץ להצגה</div>
                     </div>
                     <span>אגרת הרמבן</span>
                 </div>
                 <div class="free-card">
                     <div class="pdf-preview-wrapper free-size" onclick="openPdfViewer('למה ללמוד מוסר.pdf')">
                         <img src="למה ללמוד מוסר.jpg" alt="למה ללמוד מוסר">
-                        <div class="preview-overlay">לחץ כאן להצגה</div>
+                        <div class="preview-overlay">לחץ להצגה</div>
                     </div>
                     <span>"למה ללמוד מוסר" (חוברת דקה)</span>
                 </div>
                 <div class="free-card">
                     <div class="pdf-preview-wrapper free-size" onclick="openPdfViewer('ברכון.pdf')">
                         <img src="ברכון.jpg" alt="ברכון">
-                        <div class="preview-overlay">לחץ כאן להצגה</div>
+                        <div class="preview-overlay">לחץ להצגה</div>
                     </div>
                     <span>ברכון - פניני חיזוק</span>
                 </div>
@@ -466,21 +476,25 @@
         </div>
     </div>
 
-    <!-- מודל ה-PDF לדפדוף אופקי -->
+    <!-- חלונית צפה (Modal) לתצוגת ה-PDF (המקורית והמהירה) -->
     <div class="pdf-modal" id="pdf-modal">
-        <button class="close-pdf-btn" onclick="closePdfViewer()">×</button>
-        <div class="pdf-controls">
-            <!-- מכיוון שזה בעברית, "הבא" הולך שמאלה ו"הקודם" ימינה -->
-            <button id="next-page" onclick="onNextPage()">הקודם ◀</button>
-            <span>עמוד <span id="page-num"></span> מתוך <span id="page-count"></span></span>
-            <button id="prev-page" onclick="onPrevPage()">▶ הבא</button>
-        </div>
-        <div class="pdf-canvas-container">
-            <canvas id="pdf-render"></canvas>
+        <div class="pdf-container">
+            <button class="close-pdf-btn" onclick="closePdfViewer()">×</button>
+            <iframe id="pdf-frame" src=""></iframe>
         </div>
     </div>
 
     <script>
+        /* פונקציות לתצוגת ה-PDF - חזרה למנגנון ה-Iframe הפשוט והמהיר */
+        function openPdfViewer(pdfUrl) {
+            document.getElementById('pdf-frame').src = pdfUrl;
+            document.getElementById('pdf-modal').classList.add('active');
+        }
+        function closePdfViewer() {
+            document.getElementById('pdf-frame').src = '';
+            document.getElementById('pdf-modal').classList.remove('active');
+        }
+
         // אודיו
         const audioEl = document.getElementById('rabbi-audio');
         const widgetEl = document.getElementById('audio-widget');
@@ -493,84 +507,6 @@
         function showEmailError(event) {
             event.preventDefault(); 
             alert("שגיאה בשליחת המייל, אנא שלח מייל ישירות לכתובת: 6183444@gmail.com");
-        }
-
-        // --- לוגיקת דפדוף PDF מובנית (PDF.js) ---
-        let pdfDoc = null,
-            pageNum = 1,
-            pageIsRendering = false,
-            pageNumIsPending = null;
-
-        const scale = 1.5,
-              canvas = document.getElementById('pdf-render'),
-              ctx = canvas.getContext('2d');
-
-        // רינדור עמוד ספציפי
-        const renderPage = num => {
-            pageIsRendering = true;
-            pdfDoc.getPage(num).then(page => {
-                const viewport = page.getViewport({ scale });
-                canvas.height = viewport.height;
-                canvas.width = viewport.width;
-
-                const renderCtx = {
-                    canvasContext: ctx,
-                    viewport: viewport
-                };
-
-                page.render(renderCtx).promise.then(() => {
-                    pageIsRendering = false;
-                    if (pageNumIsPending !== null) {
-                        renderPage(pageNumIsPending);
-                        pageNumIsPending = null;
-                    }
-                });
-
-                // עדכון מספר עמוד
-                document.getElementById('page-num').textContent = num;
-            });
-        };
-
-        const queueRenderPage = num => {
-            if (pageIsRendering) { pageNumIsPending = num; } 
-            else { renderPage(num); }
-        };
-
-        // הצגת עמוד קודם
-        const onPrevPage = () => {
-            if (pageNum <= 1) return;
-            pageNum--;
-            queueRenderPage(pageNum);
-        };
-
-        // הצגת עמוד הבא
-        const onNextPage = () => {
-            if (pageNum >= pdfDoc.numPages) return;
-            pageNum++;
-            queueRenderPage(pageNum);
-        };
-
-        // פתיחת המסמך מתוך כפתור
-        function openPdfViewer(pdfUrl) {
-            document.getElementById('pdf-modal').classList.add('active');
-            pdfDoc = null;
-            pageNum = 1; // תמיד מתחיל בעמוד 1
-            
-            // טעינת מסמך ה-PDF
-            pdfjsLib.getDocument(pdfUrl).promise.then(pdfDoc_ => {
-                pdfDoc = pdfDoc_;
-                document.getElementById('page-count').textContent = pdfDoc.numPages;
-                renderPage(pageNum);
-            }).catch(err => {
-                alert("שגיאה בטעינת הקובץ. אנא ודא שהקובץ הועלה לשרת בשם המדויק.");
-                closePdfViewer();
-            });
-        }
-
-        // סגירת חלונית ה-PDF
-        function closePdfViewer() {
-            document.getElementById('pdf-modal').classList.remove('active');
-            ctx.clearRect(0, 0, canvas.width, canvas.height); // ניקוי הקנבס
         }
     </script>
 </body>
