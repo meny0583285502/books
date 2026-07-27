@@ -557,42 +557,36 @@
             document.getElementById('amount-lock-display').style.display = 'block';
 
             // כתובת הדף השמור בנדרים פלוס (S=YDMX) - עם Amount נעול (AmountLock=1)
+            // ההפניה אחרי תשלום מוצלח (Next/RedirectUrl) מוגדרת בממשק האישי של נדרים פלוס עצמם,
+            // ליעד payment-success.html באותו דומיין - אין צורך להעביר אותה כאן כפרמטר.
             const iframeUrl = `https://www.matara.pro/nedarimplus/online/?S=${NEDARIM_PAGE_CODE}` +
                 `&Amount=${encodeURIComponent(finalOrderPrice)}&AmountLock=1` +
                 `&ClientName=${encodeURIComponent(name)}` +
                 `&Phone=${encodeURIComponent(phone)}` +
                 `&Mail=${encodeURIComponent(email)}`;
 
-            document.getElementById('nedarim-iframe').src = iframeUrl;
+            const iframeEl = document.getElementById('nedarim-iframe');
+            iframeEl.src = iframeUrl;
             document.getElementById('nedarim-iframe-container').style.display = 'block';
+
+            // מזהים הצלחה כשה-iframe מנווט לדומיין שלנו (payment-success.html) - בטוח לקריאה כי הוא כבר לא "זר"
+            iframeEl.onload = function () {
+                try {
+                    const loc = iframeEl.contentWindow.location.href;
+                    if (loc.indexOf('payment-success.html') !== -1) {
+                        onPaymentConfirmed();
+                    }
+                } catch (e) {
+                    // עדיין בדף של matara.pro (דומיין זר) - צפוי ותקין, מתעלמים
+                }
+            };
         }
 
-        window.addEventListener("message", function(event) {
-            if (event.origin !== "https://www.matara.pro" && event.origin !== "https://matara.pro") return;
-            try {
-                var data = JSON.parse(event.data);
-                if (data.Name === 'TransactionResponse') {
-                    if (data.Status === 'Success' || data.Status === 'OK' || data.TransactionId) {
-                        completeOrder(data.TransactionId || 'אושר');
-                    } else {
-                        alert('התשלום לא הושלם. ' + (data.Message || ''));
-                        document.getElementById('nedarim-iframe-container').style.display = 'none';
-                        document.getElementById('amount-lock-display').style.display = 'none';
-                        document.getElementById('checkout-form-area').style.display = 'block';
-                    }
-                }
-            } catch(e) {
-                if (typeof event.data === 'string' && (event.data.includes('Success') || event.data.includes('OK'))) {
-                    completeOrder('אושר');
-                }
-            }
-        });
-
-        async function completeOrder(transactionId) {
+        async function onPaymentConfirmed() {
             document.getElementById('nedarim-iframe-container').style.display = 'none';
             document.getElementById('amount-lock-display').style.display = 'none';
             document.getElementById('checkout-success-area').style.display = 'block';
-            
+
             try {
                 await fetch(WEBHOOK_URL, {
                     method: 'POST',
@@ -602,15 +596,25 @@
                         name: window.currentOrderName,
                         phone: window.currentOrderPhone,
                         email: window.currentOrderEmail,
-                        message: window.currentOrderDetails,
-                        transactionId: transactionId
+                        message: window.currentOrderDetails
                     })
                 });
-            } catch(e) {}
-            
+            } catch (e) { /* גם אם המייל נכשל, ללקוח כבר מוצג שהתשלום אושר - התשלום עצמו כבר בוצע בפועל */ }
+
             cart = [];
             updateCartUI();
         }
+
+        // גיבוי בלבד (לא נדרש בשימוש הרגיל, כי הזיהוי העיקרי הוא ע"י ניווט ה-iframe לדף payment-success.html)
+        window.addEventListener("message", function(event) {
+            if (event.origin !== "https://www.matara.pro" && event.origin !== "https://matara.pro") return;
+            try {
+                var data = JSON.parse(event.data);
+                if (data.Name === 'TransactionResponse' && (data.Status === 'Success' || data.Status === 'OK' || data.TransactionId)) {
+                    onPaymentConfirmed();
+                }
+            } catch(e) { /* מתעלמים מהודעות שלא בפורמט הצפוי */ }
+        });
 
         async function submitContact(event) {
             event.preventDefault();
