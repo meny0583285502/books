@@ -28,7 +28,6 @@
             .header-igeret-text { width: 80%; max-width: 300px; }
         }
 
-        /* --- אייקון עגלה מרחף למעלה --- */
         .cart-floating-btn {
             position: fixed; top: 20px; left: 20px; background: var(--gold); color: #000;
             width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
@@ -59,8 +58,6 @@
         .pdf-preview-wrapper:hover .preview-overlay { background: rgba(60, 60, 60, 0.95); color: #fff; }
 
         .book-card h3 { color: var(--gold); margin: 0 0 10px 0; font-size: 1.6rem; }
-        
-        /* אזור מחיר וכמות */
         .price-cart-area { margin-top: 15px; padding-top: 15px; border-top: 1px dashed #444; }
         .price { font-size: 1.4rem; font-weight: bold; color: #fff; margin-bottom: 10px; }
         
@@ -69,7 +66,6 @@
         .qty-btn { background: #333; color: #fff; border: none; width: 30px; height: 30px; font-size: 1.2rem; cursor: pointer; }
         .qty-btn:hover { background: var(--dark-gold); }
         .qty-input { width: 40px; height: 30px; background: #222; color: #fff; border: none; text-align: center; font-size: 1.1rem; font-family: sans-serif; pointer-events: none; }
-        
         .add-btn { background: var(--gold); color: #000; border: none; height: 32px; padding: 0 15px; border-radius: 4px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; transition: 0.3s; }
         .add-btn:hover { background: #fff; }
         .add-btn svg { width: 18px; height: 18px; margin-right: 5px; fill: #000; }
@@ -100,7 +96,6 @@
         
         footer { text-align: center; padding: 2rem; margin-top: 3rem; background-color: #050505; color: #666; border-top: 1px solid #222; }
 
-        /* נגן אודיו */
         .audio-widget { position: fixed; bottom: 30px; left: 30px; width: 140px; height: 140px; z-index: 1000; cursor: pointer; }
         .audio-text-ring { position: absolute; top: 0; left: 0; width: 100%; height: 100%; animation: spin 15s linear infinite; }
         .audio-text-ring svg { width: 100%; height: 100%; overflow: visible; }
@@ -116,11 +111,10 @@
         /* מודלים כלליים */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); z-index: 9999; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
         .modal-overlay.active { display: flex; }
-        .modal-box { width: 90%; max-width: 500px; background: #1a1a1a; position: relative; border: 2px solid var(--gold); border-radius: 8px; box-shadow: 0 0 30px rgba(0,0,0,0.8); padding: 2rem; max-height: 80vh; overflow-y: auto; }
-        .close-modal-btn { position: absolute; top: 10px; right: 15px; color: #fff; font-size: 30px; cursor: pointer; background: none; border: none; transition: 0.3s; }
+        .modal-box { width: 90%; max-width: 500px; background: #1a1a1a; position: relative; border: 2px solid var(--gold); border-radius: 8px; box-shadow: 0 0 30px rgba(0,0,0,0.8); padding: 2rem; max-height: 85vh; overflow-y: auto; }
+        .close-modal-btn { position: absolute; top: 10px; right: 15px; color: #fff; font-size: 30px; cursor: pointer; background: none; border: none; transition: 0.3s; z-index: 100; }
         .close-modal-btn:hover { color: var(--gold); }
         
-        /* מודל PDF ספציפי */
         .pdf-container { width: 90%; max-width: 900px; height: 90%; padding: 0; overflow: hidden; }
         .pdf-container iframe { width: 100%; height: 100%; border: none; border-radius: 8px; }
 
@@ -131,16 +125,14 @@
         .cart-remove { color: #f44336; cursor: pointer; background: none; border: none; font-size: 1.2rem; }
         .cart-total { font-size: 1.5rem; color: #fff; text-align: left; margin-top: 20px; font-weight: bold; }
         .empty-cart-msg { text-align: center; color: #aaa; font-size: 1.2rem; padding: 20px 0; }
-        
         .checkout-btn { display: block; width: 100%; background: linear-gradient(to right, #2a2a2a, #000); color: var(--gold); border: 2px solid var(--gold); padding: 15px; font-size: 1.3rem; font-weight: bold; cursor: pointer; border-radius: 4px; font-family: 'Frank Ruhl Libre', serif; transition: 0.3s; margin-top: 20px; }
         .checkout-btn:hover { background: var(--gold); color: #000; }
 
-        /* טופס תשלום */
+        /* טפסים */
         .checkout-form { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
-        .checkout-form input { padding: 12px; background-color: #222; border: 1px solid #444; color: #fff; border-radius: 4px; font-family: inherit; font-size: 1.1rem;}
-        .checkout-form input:focus { outline: none; border-color: var(--gold); }
+        .checkout-form input, .checkout-form textarea { padding: 12px; background-color: #222; border: 1px solid #444; color: #fff; border-radius: 4px; font-family: inherit; font-size: 1.1rem;}
+        .checkout-form input:focus, .checkout-form textarea:focus { outline: none; border-color: var(--gold); }
         .checkout-note { color: #f44336; font-size: 1rem; text-align: center; margin-bottom: 10px; font-family: sans-serif; }
-        
         .pay-now-btn { background: linear-gradient(to right, var(--dark-gold), var(--gold)); color: #000; border: none; padding: 15px; font-size: 1.4rem; font-weight: bold; cursor: pointer; border-radius: 4px; font-family: 'Frank Ruhl Libre', serif; transition: opacity 0.3s; }
         .pay-now-btn:disabled { opacity: 0.7; cursor: not-allowed; }
 
@@ -148,6 +140,10 @@
         .success-msg { display: none; text-align: center; padding: 30px 10px; }
         .success-msg h2 { color: #25D366; font-size: 2rem; margin-bottom: 10px; }
         .success-msg p { font-size: 1.3rem; color: #fff; }
+
+        /* מסגרת האייפריים של התשלום */
+        #nedarim-iframe-container { display: none; width: 100%; height: 500px; margin-top: 15px; border-radius: 8px; overflow: hidden; border: 1px solid #444; }
+        #nedarim-iframe { width: 100%; height: 100%; border: none; }
     </style>
 </head>
 <body>
@@ -172,7 +168,6 @@
     </header>
 
     <div class="container">
-        <!-- ספרי מוסר בודדים -->
         <div class="books-row">
             <div class="book-card">
                 <div class="pdf-preview-wrapper book-size" onclick="openPdfViewer('מסילת ישרים.pdf')">
@@ -189,8 +184,7 @@
                                 <button class="qty-btn" onclick="changeLocalQty(this, 1)">+</button>
                             </div>
                             <button class="add-btn" onclick="addToCart('mesilat', 'מסילת ישרים', 25, this)">
-                                <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-                                הוסף
+                                <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg> הוסף
                             </button>
                         </div>
                     </div>
@@ -211,8 +205,7 @@
                                 <button class="qty-btn" onclick="changeLocalQty(this, 1)">+</button>
                             </div>
                             <button class="add-btn" onclick="addToCart('shaarei', 'שערי תשובה', 25, this)">
-                                <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-                                הוסף
+                                <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg> הוסף
                             </button>
                         </div>
                     </div>
@@ -233,8 +226,7 @@
                                 <button class="qty-btn" onclick="changeLocalQty(this, 1)">+</button>
                             </div>
                             <button class="add-btn" onclick="addToCart('orchot', 'ארחות צדיקים', 25, this)">
-                                <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-                                הוסף
+                                <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg> הוסף
                             </button>
                         </div>
                     </div>
@@ -255,8 +247,7 @@
                                 <button class="qty-btn" onclick="changeLocalQty(this, 1)">+</button>
                             </div>
                             <button class="add-btn" onclick="addToCart('chovot', 'חובות הלבבות', 50, this)">
-                                <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-                                הוסף
+                                <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg> הוסף
                             </button>
                         </div>
                     </div>
@@ -264,12 +255,10 @@
             </div>
         </div>
 
-        <!-- הסט המלא -->
         <div class="set-card">
             <img src="הדמיה כל הסט.jpg" alt="סט ספרי המוסר המלא" class="set-img">
             <h2>סט ספרי המוסר המלא</h2>
             <p style="font-size: 1.2rem; color:#ccc;">כל הספרים במארז מהודר</p>
-            
             <div class="price-cart-area" style="border:none; margin-top:0;">
                 <div class="set-price" style="margin-bottom: 20px;">120 ₪</div>
                 <div class="add-to-cart-controls" style="justify-content: center;">
@@ -279,8 +268,7 @@
                         <button class="qty-btn" onclick="changeLocalQty(this, 1)">+</button>
                     </div>
                     <button class="add-btn" onclick="addToCart('fullset', 'סט ספרי מוסר (מלא)', 120, this)">
-                        <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-                        הוסף לעגלה
+                        <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg> הוסף לעגלה
                     </button>
                 </div>
             </div>
@@ -339,22 +327,26 @@
         </div>
 
         <div class="contact-section">
-            <h2 style="color:var(--gold); margin-top:0;">יצירת קשר לברורים</h2>
+            <h2 style="color:var(--gold); margin-top:0;">יצירת קשר ופניות</h2>
             <div class="contact-methods">
                 <a href="https://wa.me/972559282259" target="_blank" class="btn btn-chat">
-                    <svg viewBox="0 0 24 24"><path d="M20.52 3.48A11.96 11.96 0 0 0 12 0C5.37 0 0 5.37 0 12c0 2.12.55 4.19 1.6 6L.5 24l6.14-1.61A11.92 11.92 0 0 0 12 24c6.63 0 12-5.37 12-12 0-3.21-1.25-6.23-3.48-8.52zM12 22.02c-1.8 0-3.56-.48-5.11-1.4l-.37-.22-3.8.99.99-3.7-.24-.38A9.97 9.97 0 0 1 2 12c0-5.51 4.49-10 10-10 2.67 0 5.18 1.04 7.07 2.93A9.95 9.95 0 0 1 22 12c0 5.51-4.49 10-10 10zM17.47 15c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.34.22-.64.07-.3-.15-1.26-.46-2.4-1.48-.88-.79-1.48-1.77-1.65-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.3.45-.45.15-.15.2-.26.3-.43.1-.17.05-.32-.02-.47-.07-.15-.67-1.62-.92-2.22-.25-.58-.5-.5-.67-.51h-.58c-.2 0-.52.07-.79.37-.27.3-1.02 1-1.02 2.44 0 1.44 1.05 2.83 1.2 3.03.15.2 2.07 3.16 5.01 4.43 2.94 1.27 2.94.85 3.48.79.55-.06 1.76-.72 2.01-1.42.25-.7.25-1.3.17-1.42-.08-.12-.27-.2-.57-.35z"/></svg>
-                    הודעה מהירה
+                    <svg viewBox="0 0 24 24"><path d="M20.52 3.48A11.96 11.96 0 0 0 12 0C5.37 0 0 5.37 0 12c0 2.12.55 4.19 1.6 6L.5 24l6.14-1.61A11.92 11.92 0 0 0 12 24c6.63 0 12-5.37 12-12 0-3.21-1.25-6.23-3.48-8.52zM12 22.02c-1.8 0-3.56-.48-5.11-1.4l-.37-.22-3.8.99.99-3.7-.24-.38A9.97 9.97 0 0 1 2 12c0-5.51 4.49-10 10-10 2.67 0 5.18 1.04 7.07 2.93A9.95 9.95 0 0 1 22 12c0 5.51-4.49 10-10 10zM17.47 15c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.34.22-.64.07-.3-.15-1.26-.46-2.4-1.48-.88-.79-1.48-1.77-1.65-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.3.45-.45.15-.15.2-.26.3-.43.1-.17.05-.32-.02-.47-.07-.15-.67-1.62-.92-2.22-.25-.58-.5-.5-.67-.51h-.58c-.2 0-.52.07-.79.37-.27.3-1.02 1-1.02 2.44 0 1.44 1.05 2.83 1.2 3.03.15.2 2.07 3.16 5.01 4.43 2.94 1.27 2.94.85 3.48.79.55-.06 1.76-.72 2.01-1.42.25-.7.25-1.3.17-1.42-.08-.12-.27-.2-.57-.35z"/></svg> הודעה מהירה
                 </a>
                 <a href="tel:0583285502" class="btn btn-phone">
-                    <svg viewBox="0 0 24 24"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg>
-                    058-3285502
+                    <svg viewBox="0 0 24 24"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg> 058-3285502
                 </a>
-                <a href="tel:0527648389" class="btn btn-phone">
-                    <svg viewBox="0 0 24 24"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg>
-                    052-7648389
+                <a href="mailto:anubanyak.musar@gmail.com" class="btn btn-email">
+                    <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg> שליחת מייל
                 </a>
             </div>
-            <p style="font-family:sans-serif;">לתרומות (קבלה 46) <a href="https://www.matara.pro/nedarimplus/online/?mosad=7018037" target="_blank" style="color:var(--gold);">לחצו כאן</a></p>
+            
+            <p style="margin-bottom: 20px; font-family:sans-serif;">או השאירו פנייה כללית ונחזור אליכם:</p>
+            <form class="checkout-form" onsubmit="submitContact(event)">
+                <input type="text" id="contact-name" placeholder="שם מלא" required>
+                <input type="tel" id="contact-phone" placeholder="מספר טלפון" required>
+                <textarea id="contact-message" rows="3" placeholder="תוכן הפנייה..." required></textarea>
+                <button type="submit" class="pay-now-btn" id="contact-btn">שלח פנייה</button>
+            </form>
         </div>
     </div>
 
@@ -363,6 +355,7 @@
         <p id="dev-footer">פיתוח תשפ"ו</p>
     </footer>
 
+    <!-- נגן אודיו -->
     <audio id="rabbi-audio" src="אני מבטיח.MP3" preload="auto"></audio>
     <div class="audio-widget" id="audio-widget" onclick="toggleAudio()">
         <div class="audio-text-ring">
@@ -376,7 +369,7 @@
         </div>
     </div>
 
-    <!-- מודל הצגת PDF -->
+    <!-- מודל PDF -->
     <div class="modal-overlay" id="pdf-modal">
         <div class="modal-box pdf-container">
             <button class="close-modal-btn" onclick="closePdfViewer()">×</button>
@@ -389,48 +382,53 @@
         <div class="modal-box">
             <button class="close-modal-btn" onclick="closeCart()">×</button>
             <h2 style="color:var(--gold); margin-top:0; font-size:2rem; border-bottom:1px solid #333; padding-bottom:10px;">עגלת קניות</h2>
-            <div id="cart-items-container">
-                <!-- פריטי העגלה יוזרקו לכאן מ-JS -->
-            </div>
+            <div id="cart-items-container"></div>
             <div class="cart-total">סך הכל: <span id="cart-total-price">0</span> ₪</div>
             <button class="checkout-btn" onclick="openCheckout()">למעבר לתשלום</button>
         </div>
     </div>
 
-    <!-- מודל צ'ק אאוט (תשלום) -->
+    <!-- מודל צ'ק אאוט (תשלום ותהליך Iframe) -->
     <div class="modal-overlay" id="checkout-modal">
         <div class="modal-box">
             <button class="close-modal-btn" onclick="closeCheckout()">×</button>
             
-            <!-- אזור הטופס המקורי -->
+            <!-- שלב 1: טופס פרטים -->
             <div id="checkout-form-area">
                 <h2 style="color:var(--gold); margin-top:0; font-size:2rem;">פרטי הזמנה</h2>
                 <div class="checkout-note">כרגע אין משלוחים להזמנות קטנות (איסוף עצמי בלבד)</div>
-                <form class="checkout-form" onsubmit="processCheckout(event)">
+                <form class="checkout-form" onsubmit="startPaymentProcess(event)">
                     <input type="text" id="order-name" placeholder="שם מלא" required>
                     <input type="tel" id="order-phone" placeholder="מספר טלפון להתקשרות" required>
-                    <!-- השליחה לשרת תתבצע בלחיצה על כפתור זה, ואז מעבר לנדרים פלוס -->
-                    <button type="submit" class="pay-now-btn" id="pay-btn">מעבר לתשלום</button>
+                    <button type="submit" class="pay-now-btn">מעבר לתשלום בנדרים פלוס</button>
                 </form>
             </div>
 
-            <!-- אזור הודעת ההצלחה שמופיע לאחר השליחה -->
+            <!-- שלב 2: תשלום בתוך האתר (Iframe נדרים פלוס) -->
+            <div id="nedarim-iframe-container">
+                <iframe id="nedarim-iframe" src=""></iframe>
+            </div>
+
+            <!-- שלב 3: מסך הצלחה -->
             <div id="checkout-success-area" class="success-msg">
                 <h2>ההזמנה בוצעה בהצלחה!</h2>
-                <p>הפרטים נקלטו במערכת, יצרו איתכם קשר בקרוב לאיסוף.</p>
+                <p>התשלום עבר והפרטים נקלטו במערכת, ניצור איתכם קשר בקרוב לאיסוף ההזמנה.</p>
                 <p style="color:var(--gold); margin-top:20px; font-size:1.5rem;">תודה רבה!</p>
             </div>
         </div>
     </div>
 
     <script>
-        // --- לוגיקת עגלת הקניות ---
+        // כתובת ה-Worker הקבועה
+        const WEBHOOK_URL = 'https://old-glitter-dac3.meny85502.workers.dev/';
+
+        // --- עגלת קניות ---
         let cart = [];
+        let finalOrderPrice = 0;
 
         function changeLocalQty(btn, delta) {
             let input = btn.parentElement.querySelector('.qty-input');
-            let current = parseInt(input.value);
-            let newVal = current + delta;
+            let newVal = parseInt(input.value) + delta;
             if(newVal >= 1) input.value = newVal;
         }
 
@@ -439,28 +437,20 @@
             let qty = parseInt(qtyInput.value);
             
             let existingItem = cart.find(item => item.id === id);
-            if(existingItem) {
-                existingItem.qty += qty;
-            } else {
-                cart.push({ id, title, price, qty });
-            }
+            if(existingItem) existingItem.qty += qty;
+            else cart.push({ id, title, price, qty });
             
-            qtyInput.value = 1; // איפוס הבורר לאחר ההוספה
+            qtyInput.value = 1; 
             updateCartUI();
             
-            // אנימציה קטנה של חיווי הוספה
             let originalText = btnElement.innerHTML;
             btnElement.innerHTML = '✓ נוסף';
             btnElement.style.background = '#25D366';
-            setTimeout(() => {
-                btnElement.innerHTML = originalText;
-                btnElement.style.background = '';
-            }, 1500);
+            setTimeout(() => { btnElement.innerHTML = originalText; btnElement.style.background = ''; }, 1500);
         }
 
         function updateCartUI() {
-            let totalQty = 0;
-            let totalPrice = 0;
+            let totalQty = 0; finalOrderPrice = 0;
             let container = document.getElementById('cart-items-container');
             container.innerHTML = '';
 
@@ -470,118 +460,137 @@
             } else {
                 document.querySelector('.checkout-btn').style.display = 'block';
                 cart.forEach((item, index) => {
-                    totalQty += item.qty;
-                    totalPrice += (item.price * item.qty);
-                    
-                    container.innerHTML += `
-                        <div class="cart-item">
-                            <div class="cart-item-title">${item.title} (X${item.qty})</div>
-                            <div class="cart-item-details">
-                                <span style="color:#fff;">${item.price * item.qty} ₪</span>
-                                <button class="cart-remove" onclick="removeFromCart(${index})">✖</button>
-                            </div>
-                        </div>
-                    `;
+                    totalQty += item.qty; finalOrderPrice += (item.price * item.qty);
+                    container.innerHTML += `<div class="cart-item"><div class="cart-item-title">${item.title} (X${item.qty})</div><div class="cart-item-details"><span style="color:#fff;">${item.price * item.qty} ₪</span><button class="cart-remove" onclick="removeFromCart(${index})">✖</button></div></div>`;
                 });
             }
-
             document.getElementById('cart-badge').innerText = totalQty;
-            document.getElementById('cart-total-price').innerText = totalPrice;
+            document.getElementById('cart-total-price').innerText = finalOrderPrice;
         }
 
-        function removeFromCart(index) {
-            cart.splice(index, 1);
-            updateCartUI();
-        }
-
-        function openCart() {
-            updateCartUI();
-            document.getElementById('cart-modal').classList.add('active');
-        }
+        function removeFromCart(index) { cart.splice(index, 1); updateCartUI(); }
+        function openCart() { updateCartUI(); document.getElementById('cart-modal').classList.add('active'); }
         function closeCart() { document.getElementById('cart-modal').classList.remove('active'); }
-
         function openCheckout() {
             closeCart();
             document.getElementById('checkout-form-area').style.display = 'block';
+            document.getElementById('nedarim-iframe-container').style.display = 'none';
             document.getElementById('checkout-success-area').style.display = 'none';
             document.getElementById('checkout-modal').classList.add('active');
         }
         function closeCheckout() { document.getElementById('checkout-modal').classList.remove('active'); }
 
 
-        // --- לוגיקת תשלום (שליחה ל-Worker + מעבר לנדרים פלוס) ---
-        async function processCheckout(event) {
+        // --- תהליך התשלום (נדרים פלוס באייפריים) ---
+        function startPaymentProcess(event) {
             event.preventDefault();
-            const payBtn = document.getElementById('pay-btn');
-            
             const name = document.getElementById('order-name').value;
             const phone = document.getElementById('order-phone').value;
             
-            // יצירת מחרוזת מפורטת של ההזמנה עבור המייל
+            if (finalOrderPrice <= 0) return alert("העגלה ריקה");
+
+            // שמירת נתונים לשליחה אחרי אישור
+            window.currentOrderName = name;
+            window.currentOrderPhone = phone;
             let orderDetails = `<strong>פירוט ההזמנה:</strong><br><br>`;
-            let finalPrice = 0;
-            cart.forEach(item => {
-                orderDetails += `- ${item.title} (כמות: ${item.qty}) = ${item.price * item.qty} ש"ח<br>`;
-                finalPrice += (item.price * item.qty);
-            });
-            orderDetails += `<br><strong>סה"כ לתשלום: ${finalPrice} ש"ח</strong><br><br>`;
-            orderDetails += `<span style="color:green;">סטטוס: הלקוח הועבר לעמוד התשלום בנדרים פלוס.</span>`;
+            cart.forEach(item => { orderDetails += `- ${item.title} (כמות: ${item.qty}) = ${item.price * item.qty} ש"ח<br>`; });
+            orderDetails += `<br><strong>סה"כ שולם: ${finalOrderPrice} ש"ח</strong>`;
+            window.currentOrderDetails = orderDetails;
 
-            // הכתובת של ה-Worker ב-Cloudflare (הושארה כפי שציינת)
-            const webhookUrl = 'https://old-glitter-dac3.meny85502.workers.dev/'; 
+            // הסתרת הטופס, פתיחת האייפריים של נדרים פלוס
+            document.getElementById('checkout-form-area').style.display = 'none';
+            
+            const iframe = document.getElementById('nedarim-iframe');
+            // יצירת כתובת לאייפריים של נדרים פלוס
+            iframe.src = `https://www.matara.pro/nedarimplus/iframe?mosad=7018037&Amount=${finalOrderPrice}&ClientName=${encodeURIComponent(name)}&Phone=${encodeURIComponent(phone)}`;
+            
+            document.getElementById('nedarim-iframe-container').style.display = 'block';
+        }
 
-            payBtn.innerText = 'מעבד נתונים...';
-            payBtn.disabled = true;
-
+        // האזנה לתשובות מהאייפריים של נדרים פלוס
+        window.addEventListener("message", function(event) {
+            if (event.origin !== "https://www.matara.pro" && event.origin !== "https://matara.pro") return;
+            
             try {
-                // שולחים למערכת שלך את ההזמנה (המייל יישלח אליך)
-                await fetch(webhookUrl, {
+                var data = JSON.parse(event.data);
+                if (data.Name === 'TransactionResponse') {
+                    if (data.Status === 'Success' || data.Status === 'OK' || data.TransactionId) {
+                        completeOrder(data.TransactionId || 'אושר');
+                    } else {
+                        alert('התשלום לא צלח. הודעה מהמערכת: ' + (data.Message || ''));
+                        document.getElementById('nedarim-iframe-container').style.display = 'none';
+                        document.getElementById('checkout-form-area').style.display = 'block';
+                    }
+                }
+            } catch(e) {
+                // למקרה שההודעה אינה אובייקט תקין
+                if (typeof event.data === 'string' && (event.data.includes('Success') || event.data.includes('OK'))) {
+                    completeOrder('אושר');
+                }
+            }
+        });
+
+        // פונקציה שנקראת רק כשהתשלום באמת עבר
+        async function completeOrder(transactionId) {
+            document.getElementById('nedarim-iframe-container').style.display = 'none';
+            document.getElementById('checkout-success-area').style.display = 'block';
+            
+            // שליחת המייל ברקע ל-Cloudflare Worker רק אחרי אישור
+            try {
+                await fetch(WEBHOOK_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        name: name,
-                        phone: phone,
-                        message: orderDetails // העברנו את פירוט העגלה לתוך "message"
+                        type: 'order',
+                        name: window.currentOrderName,
+                        phone: window.currentOrderPhone,
+                        message: window.currentOrderDetails,
+                        transactionId: transactionId
                     })
                 });
-                
-                // הלקוח יראה הודעת הצלחה
-                document.getElementById('checkout-form-area').style.display = 'none';
-                document.getElementById('checkout-success-area').style.display = 'block';
-                
-                // מאפסים את העגלה
-                cart = [];
-                updateCartUI();
-                
-                // פותחים כרטיסייה חדשה ישירות לעמוד התשלום שלכם בנדרים פלוס
-                setTimeout(() => {
-                    window.open('https://www.matara.pro/nedarimplus/online/?mosad=7018037', '_blank');
-                }, 1000);
+            } catch(e) {}
+            
+            cart = [];
+            updateCartUI();
+        }
 
+        // --- פנייה כללית (צור קשר) ---
+        async function submitContact(event) {
+            event.preventDefault();
+            const btn = document.getElementById('contact-btn');
+            btn.innerText = 'שולח...'; btn.disabled = true;
+
+            try {
+                const res = await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        type: 'contact',
+                        name: document.getElementById('contact-name').value,
+                        phone: document.getElementById('contact-phone').value,
+                        message: document.getElementById('contact-message').value
+                    })
+                });
+                if (res.ok) {
+                    alert("הפנייה נשלחה בהצלחה!");
+                    event.target.reset();
+                } else {
+                    alert("שגיאה במערכת, נסו לפנות דרך הוואטסאפ.");
+                }
             } catch (error) {
-                alert("אירעה שגיאה בחיבור לשרת, אנא נסה שוב.");
-                payBtn.innerText = 'מעבר לתשלום';
-                payBtn.disabled = false;
+                alert("שגיאת תקשורת.");
+            } finally {
+                btn.innerText = 'שלח פנייה'; btn.disabled = false;
             }
         }
 
-        // --- לוגיקת PDF ---
-        function openPdfViewer(pdfUrl) {
-            document.getElementById('pdf-frame').src = pdfUrl;
-            document.getElementById('pdf-modal').classList.add('active');
-        }
-        function closePdfViewer() {
-            document.getElementById('pdf-frame').src = '';
-            document.getElementById('pdf-modal').classList.remove('active');
-        }
+        // --- לוגיקת PDF ואודיו ---
+        function openPdfViewer(pdfUrl) { document.getElementById('pdf-frame').src = pdfUrl; document.getElementById('pdf-modal').classList.add('active'); }
+        function closePdfViewer() { document.getElementById('pdf-frame').src = ''; document.getElementById('pdf-modal').classList.remove('active'); }
 
-        // --- לוגיקת אודיו ---
         const audioEl = document.getElementById('rabbi-audio');
         const widgetEl = document.getElementById('audio-widget');
-        function toggleAudio() {
-            if (audioEl.paused) { audioEl.play(); widgetEl.classList.add('playing'); } 
-            else { audioEl.pause(); widgetEl.classList.remove('playing'); }
-        }
+        function toggleAudio() { if (audioEl.paused) { audioEl.play(); widgetEl.classList.add('playing'); } else { audioEl.pause(); widgetEl.classList.remove('playing'); } }
         audioEl.onended = function() { widgetEl.classList.remove('playing'); };
     </script>
 </body>
