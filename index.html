@@ -114,7 +114,7 @@
         /* מודלים כלליים */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); z-index: 9999; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
         .modal-overlay.active { display: flex; }
-        .modal-box { width: 90%; max-width: 500px; background: #1a1a1a; position: relative; border: 2px solid var(--gold); border-radius: 8px; box-shadow: 0 0 30px rgba(0,0,0,0.8); padding: 2rem; max-height: 90vh; overflow-y: auto; }
+        .modal-box { width: 90%; max-width: 500px; background: #1a1a1a; position: relative; border: 2px solid var(--gold); border-radius: 8px; box-shadow: 0 0 30px rgba(0,0,0,0.8); padding: 2rem; max-height: 85vh; overflow-y: auto; }
         .close-modal-btn { position: absolute; top: 10px; right: 15px; color: #fff; font-size: 30px; cursor: pointer; background: none; border: none; transition: 0.3s; z-index: 100; }
         .close-modal-btn:hover { color: var(--gold); }
         
@@ -131,7 +131,7 @@
         .checkout-btn { display: block; width: 100%; background: linear-gradient(to right, #2a2a2a, #000); color: var(--gold); border: 2px solid var(--gold); padding: 15px; font-size: 1.3rem; font-weight: bold; cursor: pointer; border-radius: 4px; font-family: 'Frank Ruhl Libre', serif; transition: 0.3s; margin-top: 20px; }
         .checkout-btn:hover { background: var(--gold); color: #000; }
 
-        /* טפסים - צרים, מיושרים, טלפון/מייל בשמאל */
+        /* טפסים צרים ומיושרים */
         .checkout-form { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; max-width: 350px; margin-left: auto; margin-right: auto; }
         .checkout-form input, .checkout-form textarea { padding: 12px; background-color: #222; border: 1px solid #444; color: #fff; border-radius: 4px; font-family: inherit; font-size: 1.1rem;}
         .checkout-form input:focus, .checkout-form textarea:focus { outline: none; border-color: var(--gold); }
@@ -139,6 +139,7 @@
         .pay-now-btn { background: linear-gradient(to right, var(--dark-gold), var(--gold)); color: #000; border: none; padding: 15px; font-size: 1.4rem; font-weight: bold; cursor: pointer; border-radius: 4px; font-family: 'Frank Ruhl Libre', serif; transition: opacity 0.3s; }
         .pay-now-btn:disabled { opacity: 0.7; cursor: not-allowed; }
 
+        /* יישור שמאלה למספרי טלפון ומייל */
         #order-phone, #contact-phone, #order-email, #contact-email { text-align: left; direction: ltr; }
 
         /* מסך הצלחה */
@@ -146,9 +147,9 @@
         .success-msg h2 { color: #25D366; font-size: 2rem; margin-bottom: 10px; }
         .success-msg p { font-size: 1.3rem; color: #fff; }
 
-        /* מסגרת האייפריים של התשלום - הוגדלה מאוד כדי לחשוף את כפתור "בצע תשלום" */
-        #nedarim-iframe-container { display: none; width: 100%; height: auto; margin-top: 15px; border-radius: 8px; border: 1px solid #444; -webkit-overflow-scrolling: touch; }
-        #nedarim-iframe { width: 100%; height: 900px; border: none; }
+        /* מסגרת האייפריים של התשלום - הוגדלה כדי לחשוף את כפתור "בצע תשלום" */
+        #nedarim-iframe-container { display: none; width: 100%; height: 800px; margin-top: 15px; border-radius: 8px; overflow: hidden; border: 1px solid #444; background: #fff; }
+        #nedarim-iframe { width: 100%; height: 100%; border: none; }
 
         /* פאנל פיתוח מוסתר */
         #admin-panel { display: none; background: #111; border: 2px dashed var(--gold); padding: 2rem; max-width: 600px; margin: 2rem auto; border-radius: 8px; }
@@ -351,7 +352,6 @@
                 <a href="tel:0527648389" class="btn btn-phone">
                     <svg viewBox="0 0 24 24"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg> <span>052-7648389</span>
                 </a>
-                <!-- כפתור מייל תוקן -->
                 <a href="mailto:anubanyak.musar@gmail.com" class="btn btn-email">
                     <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg> <span>anubanyak.musar@gmail.com</span>
                 </a>
@@ -436,8 +436,17 @@
                 </form>
             </div>
 
-            <div id="nedarim-iframe-container">
-                <iframe id="nedarim-iframe" src="" scrolling="yes"></iframe>
+            <!-- הגדלת החלונית ושימוש בטופס נסתר לפתיחה מדויקת של פרטי התשלום בנדרים פלוס -->
+            <div id="nedarim-iframe-container" style="display: none; width: 100%; height: 900px; margin-top: 15px; border-radius: 8px; overflow: auto; border: 1px solid #444; background: #fff; -webkit-overflow-scrolling: touch;">
+                <iframe id="nedarim-iframe" name="nedarim-iframe" src="" style="width: 100%; height: 100%; border: none;"></iframe>
+                <form id="nedarim-form" action="https://www.matara.pro/nedarimplus/online/" method="POST" target="nedarim-iframe" style="display:none;">
+                    <input type="hidden" name="Mosad" value="7018037">
+                    <input type="hidden" name="Amount" id="nedarim-amount" value="">
+                    <input type="hidden" name="ClientName" id="nedarim-clientname" value="">
+                    <input type="hidden" name="Phone" id="nedarim-phone" value="">
+                    <input type="hidden" name="Email" id="nedarim-email" value="">
+                    <input type="hidden" name="ForceAmount" value="1">
+                </form>
             </div>
 
             <div id="checkout-success-area" class="success-msg">
@@ -534,12 +543,15 @@
             window.currentOrderDetails = orderDetails;
 
             document.getElementById('checkout-form-area').style.display = 'none';
-            const iframe = document.getElementById('nedarim-iframe');
             
-            // עדכון הקישור לשימוש ישיר במספר המוסד וסכום נעול לתצוגה תקינה של נדרים פלוס
-            iframe.src = `https://www.matara.pro/nedarimplus/iframe?mosad=7018037&Amount=${finalOrderPrice}&ClientName=${encodeURIComponent(name)}&Phone=${encodeURIComponent(phone)}`;
+            // מילוי הטופס הנסתר ושליחתו אל האייפריים של נדרים פלוס
+            document.getElementById('nedarim-amount').value = finalOrderPrice;
+            document.getElementById('nedarim-clientname').value = name;
+            document.getElementById('nedarim-phone').value = phone;
+            document.getElementById('nedarim-email').value = email;
             
             document.getElementById('nedarim-iframe-container').style.display = 'block';
+            document.getElementById('nedarim-form').submit();
         }
 
         window.addEventListener("message", function(event) {
