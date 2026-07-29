@@ -157,13 +157,32 @@
         #nedarim-iframe-container { display: none; width: 100%; height: 900px; margin-top: 15px; border-radius: 8px; overflow: auto; border: 1px solid #444; background: #fff; -webkit-overflow-scrolling: touch; }
         #nedarim-iframe { width: 100%; height: 100%; border: none; }
 
-        /* פאנל פיתוח מוסתר */
-        #admin-panel { display: none; background: #111; border: 2px dashed var(--gold); padding: 2rem; max-width: 600px; margin: 2rem auto; border-radius: 8px; }
-        #admin-panel h2 { color: var(--gold); text-align: center; margin-top: 0; }
-        .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
-        .admin-grid div { display: flex; flex-direction: column; }
-        .admin-grid label { color: #ccc; margin-bottom: 5px; font-family: sans-serif; }
-        .admin-grid input { padding: 8px; background: #222; border: 1px solid #444; color: #fff; }
+        /* באנר מבצע אלול */
+        .promo-banner { max-width: 1100px; margin: 20px auto 0; padding: 0 1rem; }
+        .promo-banner-inner {
+            background: #000; border-radius: 10px; padding: 18px 20px; text-align: center;
+            cursor: pointer; position: relative; overflow: hidden;
+            border: 3px solid transparent;
+            background-image: linear-gradient(#000, #000), linear-gradient(90deg, var(--gold), #fff6d8, var(--dark-gold), #fff6d8, var(--gold));
+            background-origin: border-box; background-clip: padding-box, border-box;
+            background-size: 100% 100%, 300% 100%;
+            animation: promo-border-move 4s linear infinite;
+            box-shadow: 0 0 20px rgba(197, 160, 89, 0.35);
+        }
+        .promo-banner-inner:hover { box-shadow: 0 0 30px rgba(197, 160, 89, 0.6); }
+        @keyframes promo-border-move { 0% { background-position: 0 0, 0% 0; } 100% { background-position: 0 0, 300% 0; } }
+        .promo-banner-title { color: var(--gold); font-size: 1.6rem; font-weight: bold; margin: 0; }
+        .promo-banner-sub { color: #ddd; font-family: sans-serif; font-size: 0.95rem; margin-top: 4px; }
+
+        .promo-modal-box { text-align: center; }
+        .promo-modal-box h2 { color: var(--gold); font-size: 1.9rem; margin: 0 0 20px 0; }
+        .promo-deal { background: #111; border: 1px solid var(--dark-gold); border-radius: 8px; padding: 16px; margin-bottom: 15px; }
+        .promo-deal .deal-title { color: #fff; font-size: 1.2rem; margin-bottom: 6px; }
+        .promo-deal .deal-price { color: var(--gold); font-size: 1.6rem; font-weight: bold; margin-bottom: 12px; }
+        .promo-deal .deal-add-btn { background: var(--gold); color: #000; border: none; padding: 10px 20px; border-radius: 4px; font-weight: bold; cursor: pointer; font-family: sans-serif; }
+        .promo-deal .deal-add-btn:hover { background: #fff; }
+        .promo-modal-note { color: #f44336; font-family: sans-serif; font-size: 0.95rem; margin-top: 10px; }
+        .promo-bundle-tag { display: inline-block; background: var(--gold); color: #000; font-size: 0.8rem; font-weight: bold; padding: 2px 8px; border-radius: 4px; margin-right: 6px; font-family: sans-serif; }
     </style>
 </head>
 <body>
@@ -171,6 +190,13 @@
     <div class="cart-floating-btn" onclick="openCart()">
         <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
         <div class="cart-badge" id="cart-badge">0</div>
+    </div>
+
+    <div class="promo-banner">
+        <div class="promo-banner-inner" onclick="openPromoModal()">
+            <p class="promo-banner-title">🔥 מבצע לקראת חודש אלול 🔥</p>
+            <p class="promo-banner-sub">לחצו לפרטים והצטרפות למבצע</p>
+        </div>
     </div>
 
     <header>
@@ -379,22 +405,11 @@
             </div>
         </div>
         
-        <div id="admin-panel">
-            <h2>ניהול מחירים - מצב פיתוח</h2>
-            <div class="admin-grid">
-                <div><label>מסילת ישרים:</label> <input type="number" id="admin-p-mesilat" value="25"></div>
-                <div><label>שערי תשובה:</label> <input type="number" id="admin-p-shaarei" value="25"></div>
-                <div><label>ארחות צדיקים:</label> <input type="number" id="admin-p-orchot" value="25"></div>
-                <div><label>חובות הלבבות:</label> <input type="number" id="admin-p-chovot" value="50"></div>
-                <div style="grid-column: 1 / -1;"><label>סט מלא:</label> <input type="number" id="admin-p-fullset" value="120"></div>
-            </div>
-            <button onclick="updatePrices()" class="pay-now-btn" style="width:100%;">עדכן מחירים באתר</button>
-        </div>
     </div>
 
     <footer>
         <div class="distributor">הפצה ראשית: יפה נוף</div>
-        <p id="dev-footer">פיתוח תשפ"ו</p>
+        <p>פיתוח תשפ"ו</p>
     </footer>
 
     <audio id="rabbi-audio" src="אני מבטיח.MP3" preload="auto"></audio>
@@ -414,6 +429,27 @@
         <div class="modal-box pdf-container">
             <button class="close-modal-btn" onclick="closePdfViewer()">×</button>
             <iframe id="pdf-frame" src=""></iframe>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="promo-modal">
+        <div class="modal-box promo-modal-box">
+            <button class="close-modal-btn" onclick="closePromoModal()">×</button>
+            <h2>מבצע לקראת חודש אלול</h2>
+
+            <div class="promo-deal">
+                <div class="deal-title">שערי תשובה</div>
+                <div class="deal-price">3 = ב-50 ₪</div>
+                <button class="deal-add-btn" onclick="addBundleToCart('shaarei', 'שערי תשובה', 3)">הוסף מבצע לעגלה</button>
+            </div>
+
+            <div class="promo-deal">
+                <div class="deal-title">כל הסט (ארבעת ספרי מוסר היסודיים)</div>
+                <div class="deal-price">2 = ב-200 ₪</div>
+                <button class="deal-add-btn" onclick="addBundleToCart('fullset', 'סט ספרי מוסר (מלא)', 2)">הוסף מבצע לעגלה</button>
+            </div>
+
+            <p class="promo-modal-note">המבצע בתוקף עד ט"ו אלול תשפ"ו</p>
         </div>
     </div>
 
@@ -465,7 +501,7 @@
         const WEBHOOK_URL = 'https://old-glitter-dac3.meny85502.workers.dev/';
 
         // קוד הדף השמור באזור האישי בנדרים פלוס (S=YDMX), מקושר למוסד 7018037
-        const NEDARIM_PAGE_CODE = 'xDVx';
+        const NEDARIM_PAGE_CODE = 'YDMX';
 
         window.prices = {
             mesilat: 25,
@@ -475,6 +511,12 @@
             fullset: 120
         };
 
+        // מבצע אלול: כל N יחידות של הפריט → מחיר חבילה קבוע. יתרה מעל הכפולה נמכרת במחיר רגיל.
+        window.bundles = {
+            shaarei: { bundleQty: 3, bundlePrice: 50 },
+            fullset: { bundleQty: 2, bundlePrice: 200 }
+        };
+
         let cart = [];
         let finalOrderPrice = 0;
 
@@ -482,6 +524,17 @@
             let input = btn.parentElement.querySelector('.qty-input');
             let newVal = parseInt(input.value) + delta;
             if(newVal >= 1) input.value = newVal;
+        }
+
+        // מחשב את המחיר הכולל לפריט בעגלה, כולל מבצע החבילה אם קיים
+        function calcItemTotal(item) {
+            const bundle = window.bundles[item.id];
+            if (bundle) {
+                const bundleCount = Math.floor(item.qty / bundle.bundleQty);
+                const remainder = item.qty - (bundleCount * bundle.bundleQty);
+                return (bundleCount * bundle.bundlePrice) + (remainder * item.price);
+            }
+            return item.price * item.qty;
         }
 
         function addToCart(id, title, btnElement) {
@@ -501,6 +554,18 @@
             btnElement.style.color = '#000';
         }
 
+        // הוספה ישירה מחלון המבצע - מוסיף את כמות החבילה של הפריט (למשל 3 שערי תשובה, או 2 סטים)
+        function addBundleToCart(id, title, bundleQty) {
+            let price = window.prices[id];
+            let existingItem = cart.find(item => item.id === id);
+            if (existingItem) existingItem.qty += bundleQty;
+            else cart.push({ id, title, price, qty: bundleQty });
+
+            updateCartUI();
+            closePromoModal();
+            openCart();
+        }
+
         function updateCartUI() {
             let totalQty = 0; finalOrderPrice = 0;
             let container = document.getElementById('cart-items-container');
@@ -512,8 +577,12 @@
             } else {
                 document.querySelector('.checkout-btn').style.display = 'block';
                 cart.forEach((item, index) => {
-                    totalQty += item.qty; finalOrderPrice += (item.price * item.qty);
-                    container.innerHTML += `<div class="cart-item"><div class="cart-item-title">${item.title} (X${item.qty})</div><div class="cart-item-details"><span style="color:#fff;">${item.price * item.qty} ₪</span><button class="cart-remove" onclick="removeFromCart(${index})">✖</button></div></div>`;
+                    totalQty += item.qty;
+                    const itemTotal = calcItemTotal(item);
+                    finalOrderPrice += itemTotal;
+                    const isBundle = window.bundles[item.id] && item.qty >= window.bundles[item.id].bundleQty;
+                    const bundleTag = isBundle ? '<span class="promo-bundle-tag">מבצע אלול</span>' : '';
+                    container.innerHTML += `<div class="cart-item"><div class="cart-item-title">${bundleTag}${item.title} (X${item.qty})</div><div class="cart-item-details"><span style="color:#fff;">${itemTotal} ₪</span><button class="cart-remove" onclick="removeFromCart(${index})">✖</button></div></div>`;
                 });
             }
             document.getElementById('cart-badge').innerText = totalQty;
@@ -523,6 +592,8 @@
         function removeFromCart(index) { cart.splice(index, 1); updateCartUI(); }
         function openCart() { updateCartUI(); document.getElementById('cart-modal').classList.add('active'); }
         function closeCart() { document.getElementById('cart-modal').classList.remove('active'); }
+        function openPromoModal() { document.getElementById('promo-modal').classList.add('active'); }
+        function closePromoModal() { document.getElementById('promo-modal').classList.remove('active'); }
         function openCheckout() {
             closeCart();
             document.getElementById('checkout-form-area').style.display = 'block';
@@ -546,7 +617,7 @@
             window.currentOrderEmail = email;
             
             let orderDetails = `<strong>פירוט ההזמנה:</strong><br><br>`;
-            cart.forEach(item => { orderDetails += `- ${item.title} (כמות: ${item.qty}) = ${item.price * item.qty} ש"ח<br>`; });
+            cart.forEach(item => { orderDetails += `- ${item.title} (כמות: ${item.qty}) = ${calcItemTotal(item)} ש"ח<br>`; });
             orderDetails += `<br><strong>סה"כ שולם: ${finalOrderPrice} ש"ח</strong>`;
             window.currentOrderDetails = orderDetails;
 
@@ -644,42 +715,6 @@
             } finally {
                 btn.innerText = 'שלח פנייה'; btn.disabled = false;
             }
-        }
-
-        let clickCount = 0;
-        let clickTimer;
-        document.getElementById('dev-footer').addEventListener('click', function() {
-            clickCount++;
-            clearTimeout(clickTimer);
-            clickTimer = setTimeout(() => { clickCount = 0; }, 2000);
-
-            if (clickCount === 3) {
-                clickCount = 0;
-                let passcode = prompt("אנא הזן קוד פיתוח (5502):");
-                if (passcode === "5502") {
-                    let panel = document.getElementById('admin-panel');
-                    panel.style.display = 'block';
-                    panel.scrollIntoView({ behavior: 'smooth' });
-                } else if (passcode !== null) {
-                    alert("קוד שגוי");
-                }
-            }
-        });
-
-        function updatePrices() {
-            window.prices.mesilat = parseInt(document.getElementById('admin-p-mesilat').value) || 0;
-            window.prices.shaarei = parseInt(document.getElementById('admin-p-shaarei').value) || 0;
-            window.prices.orchot = parseInt(document.getElementById('admin-p-orchot').value) || 0;
-            window.prices.chovot = parseInt(document.getElementById('admin-p-chovot').value) || 0;
-            window.prices.fullset = parseInt(document.getElementById('admin-p-fullset').value) || 0;
-
-            document.getElementById('disp-price-mesilat').innerText = window.prices.mesilat + ' ₪';
-            document.getElementById('disp-price-shaarei').innerText = window.prices.shaarei + ' ₪';
-            document.getElementById('disp-price-orchot').innerText = window.prices.orchot + ' ₪';
-            document.getElementById('disp-price-chovot').innerText = window.prices.chovot + ' ₪';
-            document.getElementById('disp-price-fullset').innerText = window.prices.fullset + ' ₪';
-            
-            alert('המחירים עודכנו בהצלחה! (יוחלו בהזמנות הבאות שיתווספו לעגלה)');
         }
 
         function openPdfViewer(pdfUrl) { document.getElementById('pdf-frame').src = pdfUrl; document.getElementById('pdf-modal').classList.add('active'); }
