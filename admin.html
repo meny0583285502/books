@@ -32,6 +32,10 @@
     .pickup-row input.city { width: 140px; flex-shrink: 0; }
     .pickup-row input.address { flex: 1; }
     .pickup-row .remove-row { background: #442222; color: #f44336; border: none; padding: 8px 10px; border-radius: 4px; cursor: pointer; flex-shrink: 0; }
+    .promo-row { display: flex; gap: 10px; margin-bottom: 8px; align-items: center; background: #111; border: 1px solid var(--gold); border-radius: 4px; padding: 8px 12px; }
+    .promo-row .promo-text { flex: 1; color: #fff; font-size: 0.95rem; }
+    .promo-row .remove-row { background: #442222; color: #f44336; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; }
+    #promo-product-select { padding: 8px; background: #222; border: 1px solid #444; color: #fff; border-radius: 4px; }
 </style>
 </head>
 <body>
@@ -67,12 +71,15 @@
 
     <h2>ניהול מחירים</h2>
     <div class="price-grid" id="price-grid"></div>
-    <div style="margin-top:1.5rem; border-top:1px dashed #444; padding-top:1rem;">
-        <label style="display:block; color:#ccc; margin-bottom:6px;">מבצע שמירת הלשון - כמות ביחידות למבצע / מחיר המבצע (₪)</label>
-        <div style="display:flex; gap:10px;">
-            <input type="number" id="price-bundle-qty" style="width:80px;">
-            <input type="number" id="price-bundle-price" style="width:100px;">
-        </div>
+
+    <h2>מבצעים</h2>
+    <p style="color:#aaa; font-size:0.9rem;">מבצע "כמות = מחיר" על מוצר - למשל 2 יחידות שערי תשובה ב-40 ₪.</p>
+    <div id="promo-rows"></div>
+    <div style="display:flex; gap:10px; margin-top:12px; align-items:center; flex-wrap:wrap;">
+        <select id="promo-product-select"></select>
+        <input type="number" id="promo-qty" placeholder="כמות" style="width:80px;">
+        <input type="number" id="promo-price" placeholder="מחיר מבצע ₪" style="width:120px;">
+        <button onclick="addPromoRow()" style="background:#333; color:var(--gold);">+ הוסף מבצע</button>
     </div>
     <button onclick="savePrices()" style="margin-top:1rem;">שמור מחירים</button>
     <div class="msg" id="price-msg"></div>
@@ -82,6 +89,7 @@
     const WEBHOOK_URL = 'https://old-glitter-dac3.meny85502.workers.dev/';
     let SECRET = '';
     let refreshTimer = null;
+    let currentBundles = {}; // { productId: { bundleQty, bundlePrice } } - נערך חי בדף, נשמר עם "שמור מחירים"
 
     // הרשימה הקבועה שכרגע מוטמעת ב-index.html - משמשת ברירת מחדל אם עוד לא נשמר דבר בשרת
     const DEFAULT_PICKUP_POINTS = [
@@ -93,15 +101,14 @@
 
     const DEFAULT_PRICES = {
         mesilat: 25, shaarei: 25, orchot: 25, chovot: 50, fullset: 120,
-        shemirat: 25, mesilat_soft: 10, shaarei_soft: 10, softset: 20
+        shemirat: 25, mesilat_soft: 10, shaarei_soft: 10, softset: 20, shemirat_soft_set: 20
     };
     const PRICE_LABELS = {
         mesilat: 'מסילת ישרים', shaarei: 'שערי תשובה', orchot: 'ארחות צדיקים', chovot: 'חובות הלבבות',
         fullset: 'סט ספרי מוסר (מלא)', shemirat: 'שמירת הלשון',
         mesilat_soft: 'מסילת ישרים - כריכה רכה', shaarei_soft: 'שערי תשובה - כריכה רכה',
-        softset: 'סט (כריכה רכה)'
+        softset: 'סט (כריכה רכה)', shemirat_soft_set: 'כריכה רכה - שמירת הלשון (בקרוב)'
     };
-    const DEFAULT_BUNDLE = { bundleQty: 2, bundlePrice: 40 };
 
     function unlock() {
         SECRET = document.getElementById('secret-input').value;
@@ -135,13 +142,15 @@
 
                 // ממלאים את טבלת המחירים - גם כאן רק בכניסה, לא בכל רענון
                 const prices = Object.assign({}, DEFAULT_PRICES, data.prices || {});
-                const bundle = Object.assign({}, DEFAULT_BUNDLE, (data.bundles && data.bundles.shemirat) || {});
                 const grid = document.getElementById('price-grid');
                 grid.innerHTML = Object.keys(PRICE_LABELS).map(id =>
                     `<label>${PRICE_LABELS[id]}</label><input type="number" id="price-${id}" value="${prices[id]}">`
                 ).join('');
-                document.getElementById('price-bundle-qty').value = bundle.bundleQty;
-                document.getElementById('price-bundle-price').value = bundle.bundlePrice;
+
+                // מבצעים - כל מה שכבר קיים בשרת (או ריק אם אין)
+                currentBundles = Object.assign({}, data.bundles || {});
+                renderPromoProductSelect();
+                renderPromoRows();
 
                 // רענון אוטומטי של הסטטיסטיקות (לא של תיבות העריכה) כל 10 שניות
                 if (refreshTimer) clearInterval(refreshTimer);
@@ -206,27 +215,64 @@
         }
     }
 
+    function renderPromoProductSelect() {
+        const sel = document.getElementById('promo-product-select');
+        sel.innerHTML = Object.keys(PRICE_LABELS).map(id =>
+            `<option value="${id}">${PRICE_LABELS[id]}</option>`
+        ).join('');
+    }
+
+    function renderPromoRows() {
+        const container = document.getElementById('promo-rows');
+        const ids = Object.keys(currentBundles);
+        if (ids.length === 0) {
+            container.innerHTML = '<div class="empty-cart-msg" style="color:#888; padding:8px 0;">אין מבצעים פעילים כרגע.</div>';
+            return;
+        }
+        container.innerHTML = ids.map(id => {
+            const b = currentBundles[id];
+            const label = PRICE_LABELS[id] || id;
+            return `<div class="promo-row">
+                <span class="promo-text">${label}: ${b.bundleQty} = ב-${b.bundlePrice} ₪</span>
+                <button class="remove-row" onclick="removePromoRow('${id}')">✖ הסר</button>
+            </div>`;
+        }).join('');
+    }
+
+    function addPromoRow() {
+        const id = document.getElementById('promo-product-select').value;
+        const qty = parseInt(document.getElementById('promo-qty').value);
+        const price = parseInt(document.getElementById('promo-price').value);
+        if (!id || !qty || !price) {
+            alert('יש למלא כמות ומחיר מבצע תקינים');
+            return;
+        }
+        currentBundles[id] = { bundleQty: qty, bundlePrice: price };
+        document.getElementById('promo-qty').value = '';
+        document.getElementById('promo-price').value = '';
+        renderPromoRows();
+    }
+
+    function removePromoRow(id) {
+        delete currentBundles[id];
+        renderPromoRows();
+    }
+
     async function savePrices() {
         const prices = {};
         Object.keys(PRICE_LABELS).forEach(id => {
             prices[id] = parseInt(document.getElementById('price-' + id).value) || 0;
         });
-        const bundles = {
-            shemirat: {
-                bundleQty: parseInt(document.getElementById('price-bundle-qty').value) || DEFAULT_BUNDLE.bundleQty,
-                bundlePrice: parseInt(document.getElementById('price-bundle-price').value) || DEFAULT_BUNDLE.bundlePrice
-            }
-        };
         const msgEl = document.getElementById('price-msg');
         msgEl.className = 'msg'; msgEl.innerText = 'שומר...';
         try {
             const res = await fetch(WEBHOOK_URL + 'save-prices?secret=' + encodeURIComponent(SECRET), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ prices, bundles })
+                body: JSON.stringify({ prices, bundles: currentBundles })
             });
             if (res.ok) {
-                msgEl.className = 'msg ok'; msgEl.innerText = 'המחירים נשמרו! ייראו באתר תוך רגע.';
+                msgEl.className = 'msg ok'; msgEl.innerText = 'המחירים והמבצעים נשמרו! ייראו באתר תוך רגע.';
             } else {
                 msgEl.className = 'msg err'; msgEl.innerText = 'שמירה נכשלה - בדוק את הסיסמה.';
             }
