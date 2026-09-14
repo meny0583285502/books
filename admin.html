@@ -61,6 +61,15 @@
 <script>
     const WEBHOOK_URL = 'https://old-glitter-dac3.meny85502.workers.dev/';
     let SECRET = '';
+    let refreshTimer = null;
+
+    // הרשימה הקבועה שכרגע מוטמעת ב-index.html - משמשת ברירת מחדל אם עוד לא נשמר דבר בשרת
+    const DEFAULT_PICKUP_POINTS = [
+        '<strong>בני ברק:</strong> ישיבת פוניבז\' (בניין אהל קדושים, רחוב ראב"ד)',
+        '<strong>בני ברק:</strong> רחוב ירושלים 36',
+        '<strong>גבעת זאב:</strong> רחוב המכבים',
+        '<strong>ירושלים:</strong> שכונת רמות, מירסקי 5'
+    ];
 
     function unlock() {
         SECRET = document.getElementById('secret-input').value;
@@ -80,6 +89,16 @@
             if (isUnlockAttempt) {
                 document.getElementById('locked').style.display = 'none';
                 document.getElementById('unlocked').style.display = 'block';
+
+                // ממלאים את תיבת נקודות ההפצה רק בכניסה - לא בכל רענון אוטומטי, כדי לא לדרוס עריכה באמצע
+                const points = (data.pickupPoints && Array.isArray(data.pickupPoints) && data.pickupPoints.length > 0)
+                    ? data.pickupPoints
+                    : DEFAULT_PICKUP_POINTS;
+                document.getElementById('pickup-textarea').value = points.join('\n');
+
+                // רענון אוטומטי של הסטטיסטיקות (לא של תיבת העריכה) כל 10 שניות
+                if (refreshTimer) clearInterval(refreshTimer);
+                refreshTimer = setInterval(() => loadStats(false), 10000);
             }
 
             document.getElementById('online-count').innerText = data.online ?? '-';
@@ -92,10 +111,6 @@
                 Object.keys(data.days).sort().reverse().forEach(day => {
                     tbody.innerHTML += `<tr><td>${day}</td><td>${data.days[day]}</td></tr>`;
                 });
-            }
-
-            if (data.pickupPoints && Array.isArray(data.pickupPoints)) {
-                document.getElementById('pickup-textarea').value = data.pickupPoints.join('\n');
             }
         } catch (e) {
             if (isUnlockAttempt) document.getElementById('lock-msg').innerText = 'שגיאת תקשורת עם השרת.';
