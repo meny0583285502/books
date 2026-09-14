@@ -25,6 +25,9 @@
     .msg.ok { color: #25D366; }
     .msg.err { color: #f44336; }
     #locked, #unlocked { display: none; }
+    .price-grid { display: grid; grid-template-columns: 1fr 100px; gap: 10px 15px; align-items: center; margin-top: 10px; }
+    .price-grid label { color: #ccc; font-size: 0.95rem; }
+    .price-grid input { width: 100%; box-sizing: border-box; }
 </style>
 </head>
 <body>
@@ -56,6 +59,18 @@
     <br>
     <button onclick="savePickup()">שמור נקודות איסוף</button>
     <div class="msg" id="pickup-msg"></div>
+
+    <h2>ניהול מחירים</h2>
+    <div class="price-grid" id="price-grid"></div>
+    <div style="margin-top:1.5rem; border-top:1px dashed #444; padding-top:1rem;">
+        <label style="display:block; color:#ccc; margin-bottom:6px;">מבצע שמירת הלשון - כמות ביחידות למבצע / מחיר המבצע (₪)</label>
+        <div style="display:flex; gap:10px;">
+            <input type="number" id="price-bundle-qty" style="width:80px;">
+            <input type="number" id="price-bundle-price" style="width:100px;">
+        </div>
+    </div>
+    <button onclick="savePrices()" style="margin-top:1rem;">שמור מחירים</button>
+    <div class="msg" id="price-msg"></div>
 </div>
 
 <script>
@@ -70,6 +85,18 @@
         '<strong>גבעת זאב:</strong> רחוב המכבים',
         '<strong>ירושלים:</strong> שכונת רמות, מירסקי 5'
     ];
+
+    const DEFAULT_PRICES = {
+        mesilat: 25, shaarei: 25, orchot: 25, chovot: 50, fullset: 120,
+        shemirat: 25, mesilat_soft: 10, shaarei_soft: 10, softset: 20
+    };
+    const PRICE_LABELS = {
+        mesilat: 'מסילת ישרים', shaarei: 'שערי תשובה', orchot: 'ארחות צדיקים', chovot: 'חובות הלבבות',
+        fullset: 'סט ספרי מוסר (מלא)', shemirat: 'שמירת הלשון',
+        mesilat_soft: 'מסילת ישרים - כריכה רכה', shaarei_soft: 'שערי תשובה - כריכה רכה',
+        softset: 'סט (כריכה רכה)'
+    };
+    const DEFAULT_BUNDLE = { bundleQty: 2, bundlePrice: 40 };
 
     function unlock() {
         SECRET = document.getElementById('secret-input').value;
@@ -96,7 +123,17 @@
                     : DEFAULT_PICKUP_POINTS;
                 document.getElementById('pickup-textarea').value = points.join('\n');
 
-                // רענון אוטומטי של הסטטיסטיקות (לא של תיבת העריכה) כל 10 שניות
+                // ממלאים את טבלת המחירים - גם כאן רק בכניסה, לא בכל רענון
+                const prices = Object.assign({}, DEFAULT_PRICES, data.prices || {});
+                const bundle = Object.assign({}, DEFAULT_BUNDLE, (data.bundles && data.bundles.shemirat) || {});
+                const grid = document.getElementById('price-grid');
+                grid.innerHTML = Object.keys(PRICE_LABELS).map(id =>
+                    `<label>${PRICE_LABELS[id]}</label><input type="number" id="price-${id}" value="${prices[id]}">`
+                ).join('');
+                document.getElementById('price-bundle-qty').value = bundle.bundleQty;
+                document.getElementById('price-bundle-price').value = bundle.bundlePrice;
+
+                // רענון אוטומטי של הסטטיסטיקות (לא של תיבות העריכה) כל 10 שניות
                 if (refreshTimer) clearInterval(refreshTimer);
                 refreshTimer = setInterval(() => loadStats(false), 10000);
             }
@@ -130,6 +167,35 @@
             });
             if (res.ok) {
                 msgEl.className = 'msg ok'; msgEl.innerText = 'נשמר בהצלחה! השינוי יופיע באתר תוך רגע.';
+            } else {
+                msgEl.className = 'msg err'; msgEl.innerText = 'שמירה נכשלה - בדוק את הסיסמה.';
+            }
+        } catch (e) {
+            msgEl.className = 'msg err'; msgEl.innerText = 'שגיאת תקשורת.';
+        }
+    }
+
+    async function savePrices() {
+        const prices = {};
+        Object.keys(PRICE_LABELS).forEach(id => {
+            prices[id] = parseInt(document.getElementById('price-' + id).value) || 0;
+        });
+        const bundles = {
+            shemirat: {
+                bundleQty: parseInt(document.getElementById('price-bundle-qty').value) || DEFAULT_BUNDLE.bundleQty,
+                bundlePrice: parseInt(document.getElementById('price-bundle-price').value) || DEFAULT_BUNDLE.bundlePrice
+            }
+        };
+        const msgEl = document.getElementById('price-msg');
+        msgEl.className = 'msg'; msgEl.innerText = 'שומר...';
+        try {
+            const res = await fetch(WEBHOOK_URL + 'save-prices?secret=' + encodeURIComponent(SECRET), {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ prices, bundles })
+            });
+            if (res.ok) {
+                msgEl.className = 'msg ok'; msgEl.innerText = 'המחירים נשמרו! ייראו באתר תוך רגע.';
             } else {
                 msgEl.className = 'msg err'; msgEl.innerText = 'שמירה נכשלה - בדוק את הסיסמה.';
             }
