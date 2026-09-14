@@ -161,8 +161,12 @@
         .promo-deal .deal-add-btn:hover { background: #fff; }
         .promo-bundle-tag { display: inline-block; background: var(--gold); color: #000; font-size: 0.8rem; font-weight: bold; padding: 2px 8px; border-radius: 4px; margin-right: 6px; font-family: sans-serif; }
         .sale-note { color: #f44336; font-size: 0.95rem; font-family: sans-serif; margin-top: 6px; }
-        .softcover-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 4rem; }
-        @media (max-width: 900px) { .softcover-row { grid-template-columns: 1fr; } }
+        .half-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 4rem; }
+        @media (max-width: 800px) { .half-row { grid-template-columns: 1fr; } }
+        .half-card { background: var(--card-bg); border: 1px solid var(--border-color); padding: 1.5rem; border-radius: 8px; text-align: center; display: flex; flex-direction: column; }
+        .softcover-picker { justify-content: center; cursor: pointer; transition: 0.3s; border-color: var(--dark-gold); }
+        .softcover-picker:hover { border-color: var(--gold); box-shadow: 0 5px 15px rgba(197, 160, 89, 0.15); }
+        .soon-note { color: #999; font-family: sans-serif; font-size: 0.85rem; margin-top: 12px; border-top: 1px dashed #444; padding-top: 10px; }
     </style>
 </head>
 <body>
@@ -271,28 +275,6 @@
                     </div>
                 </div>
             </div>
-            <div class="book-card">
-                <div class="pdf-preview-wrapper book-size" onclick="openPdfViewer('שמירת הלשון.pdf')">
-                    <img src="שמירת הלשון.jpg" alt="שמירת הלשון"><div class="preview-overlay">לחץ להצגה</div>
-                </div>
-                <div>
-                    <h3>שמירת הלשון</h3>
-                    <div class="price-cart-area">
-                        <div class="price" id="disp-price-shemirat">25 ₪</div>
-                        <div class="sale-note">מבצע: 2 = ב-40 ₪</div>
-                        <div class="add-to-cart-controls">
-                            <div class="qty-selector">
-                                <button class="qty-btn" onclick="changeLocalQty(this, -1)">-</button>
-                                <input type="text" class="qty-input" value="1" readonly>
-                                <button class="qty-btn" onclick="changeLocalQty(this, 1)">+</button>
-                            </div>
-                            <button class="add-btn" onclick="addToCart('shemirat', 'שמירת הלשון', this)">
-                                <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg> <span>הוסף</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <div class="set-card">
@@ -315,56 +297,33 @@
             </div>
         </div>
 
-        <h2 style="color:var(--gold); text-align:center; margin-bottom:1.5rem;">מהדורת כריכה רכה - נוחה וקלה לנשיאה</h2>
-        <div class="softcover-row">
-            <div class="book-card">
-                <h3>מסילת ישרים - כריכה רכה</h3>
+        <div class="half-row">
+            <div class="half-card">
+                <div class="pdf-preview-wrapper book-size" onclick="openPdfViewer('שמירת הלשון.pdf')">
+                    <img src="שמירת הלשון.jpg" alt="שמירת הלשון"><div class="preview-overlay">לחץ להצגה</div>
+                </div>
+                <h3>שמירת הלשון</h3>
                 <div class="price-cart-area" style="border:none;">
-                    <div class="price">10 ₪</div>
+                    <div class="price" id="disp-price-shemirat">25 ₪</div>
+                    <div class="sale-note">מבצע: 2 = ב-40 ₪</div>
                     <div class="add-to-cart-controls">
                         <div class="qty-selector">
                             <button class="qty-btn" onclick="changeLocalQty(this, -1)">-</button>
                             <input type="text" class="qty-input" value="1" readonly>
                             <button class="qty-btn" onclick="changeLocalQty(this, 1)">+</button>
                         </div>
-                        <button class="add-btn" onclick="addToCart('mesilat_soft', 'מסילת ישרים - כריכה רכה', this)">
+                        <button class="add-btn" onclick="addToCart('shemirat', 'שמירת הלשון', this)">
                             <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg> <span>הוסף</span>
                         </button>
                     </div>
                 </div>
+                <p class="soon-note">בקרוב: סט שמירת הלשון בכריכה רכה (2 כרכים)</p>
             </div>
-            <div class="book-card">
-                <h3>שערי תשובה - כריכה רכה</h3>
-                <div class="price-cart-area" style="border:none;">
-                    <div class="price">10 ₪</div>
-                    <div class="add-to-cart-controls">
-                        <div class="qty-selector">
-                            <button class="qty-btn" onclick="changeLocalQty(this, -1)">-</button>
-                            <input type="text" class="qty-input" value="1" readonly>
-                            <button class="qty-btn" onclick="changeLocalQty(this, 1)">+</button>
-                        </div>
-                        <button class="add-btn" onclick="addToCart('shaarei_soft', 'שערי תשובה - כריכה רכה', this)">
-                            <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg> <span>הוסף</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div class="book-card">
-                <h3>סט שני הכרכים - כריכה רכה</h3>
-                <p style="font-family:sans-serif; color:#ccc; font-size:0.95rem; margin-top:-8px;">מסילת ישרים + שערי תשובה</p>
-                <div class="price-cart-area" style="border:none;">
-                    <div class="price">20 ₪</div>
-                    <div class="add-to-cart-controls">
-                        <div class="qty-selector">
-                            <button class="qty-btn" onclick="changeLocalQty(this, -1)">-</button>
-                            <input type="text" class="qty-input" value="1" readonly>
-                            <button class="qty-btn" onclick="changeLocalQty(this, 1)">+</button>
-                        </div>
-                        <button class="add-btn" onclick="addToCart('softset', 'סט (כריכה רכה) - מסילת ישרים ושערי תשובה', this)">
-                            <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg> <span>הוסף</span>
-                        </button>
-                    </div>
-                </div>
+
+            <div class="half-card softcover-picker" onclick="openSoftcoverModal()">
+                <h3>כריכה רכה</h3>
+                <p style="font-family:sans-serif; color:#ccc; font-size:1.05rem;">מסילת ישרים ושערי תשובה</p>
+                <p style="font-family:sans-serif; color:var(--gold); font-size:0.95rem; margin-top:15px;">לחצו לבחירת ספר בודד או סט ולהוספה לעגלה</p>
             </div>
         </div>
 
@@ -466,6 +425,31 @@
         <div class="modal-box pdf-container">
             <button class="close-modal-btn" onclick="closePdfViewer()">×</button>
             <iframe id="pdf-frame" src=""></iframe>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="softcover-modal">
+        <div class="modal-box promo-modal-box">
+            <button class="close-modal-btn" onclick="closeSoftcoverModal()">×</button>
+            <h2>כריכה רכה</h2>
+
+            <div class="promo-deal">
+                <div class="deal-title">מסילת ישרים - כריכה רכה</div>
+                <div class="deal-price">10 ₪</div>
+                <button class="deal-add-btn" onclick="addSoftcoverToCart('mesilat_soft', 'מסילת ישרים - כריכה רכה')">הוסף לעגלה</button>
+            </div>
+
+            <div class="promo-deal">
+                <div class="deal-title">שערי תשובה - כריכה רכה</div>
+                <div class="deal-price">10 ₪</div>
+                <button class="deal-add-btn" onclick="addSoftcoverToCart('shaarei_soft', 'שערי תשובה - כריכה רכה')">הוסף לעגלה</button>
+            </div>
+
+            <div class="promo-deal">
+                <div class="deal-title">סט שני הכרכים - כריכה רכה</div>
+                <div class="deal-price">20 ₪</div>
+                <button class="deal-add-btn" onclick="addSoftcoverToCart('softset', 'סט (כריכה רכה) - מסילת ישרים ושערי תשובה')">הוסף לעגלה</button>
+            </div>
         </div>
     </div>
 
@@ -599,6 +583,19 @@
         function removeFromCart(index) { cart.splice(index, 1); updateCartUI(); }
         function openCart() { updateCartUI(); document.getElementById('cart-modal').classList.add('active'); }
         function closeCart() { document.getElementById('cart-modal').classList.remove('active'); }
+
+        function openSoftcoverModal() { document.getElementById('softcover-modal').classList.add('active'); }
+        function closeSoftcoverModal() { document.getElementById('softcover-modal').classList.remove('active'); }
+        function addSoftcoverToCart(id, title) {
+            let price = window.prices[id];
+            let existingItem = cart.find(item => item.id === id);
+            if (existingItem) existingItem.qty += 1;
+            else cart.push({ id, title, price, qty: 1 });
+            updateCartUI();
+            closeSoftcoverModal();
+            openCart();
+        }
+
         function openCheckout() {
             closeCart();
             document.getElementById('checkout-form-area').style.display = 'block';
