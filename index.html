@@ -846,7 +846,7 @@
             try { fetch(WEBHOOK_URL + 'track', { method: 'POST' }); } catch (e) {}
         }
         pingVisit();
-        setInterval(pingVisit, 60000);
+        setInterval(pingVisit, 120000);
     </script>
 </body>
 </html>
