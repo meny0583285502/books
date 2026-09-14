@@ -140,7 +140,7 @@
 
                 // רענון אוטומטי של הסטטיסטיקות (לא של תיבות העריכה) כל 10 שניות
                 if (refreshTimer) clearInterval(refreshTimer);
-                refreshTimer = setInterval(() => loadStats(false), 10000);
+                refreshTimer = setInterval(() => loadStats(false), 20000);
             }
 
             document.getElementById('online-count').innerText = data.online ?? '-';
