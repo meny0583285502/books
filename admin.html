@@ -28,6 +28,10 @@
     .price-grid { display: grid; grid-template-columns: 1fr 100px; gap: 10px 15px; align-items: center; margin-top: 10px; }
     .price-grid label { color: #ccc; font-size: 0.95rem; }
     .price-grid input { width: 100%; box-sizing: border-box; }
+    .pickup-row { display: flex; gap: 10px; margin-bottom: 8px; align-items: center; }
+    .pickup-row input.city { width: 140px; flex-shrink: 0; }
+    .pickup-row input.address { flex: 1; }
+    .pickup-row .remove-row { background: #442222; color: #f44336; border: none; padding: 8px 10px; border-radius: 4px; cursor: pointer; flex-shrink: 0; }
 </style>
 </head>
 <body>
@@ -54,8 +58,9 @@
     <button onclick="loadStats()">רענן נתונים</button>
 
     <h2>נקודות איסוף</h2>
-    <p style="color:#aaa; font-size:0.9rem;">שורה אחת לכל נקודת איסוף. אפשר לכלול תגי HTML פשוטים כמו &lt;strong&gt;.</p>
-    <textarea id="pickup-textarea"></textarea>
+    <p style="color:#aaa; font-size:0.9rem;">לכל נקודת איסוף: עיר (תודגש אוטומטית) וכתובת.</p>
+    <div id="pickup-rows"></div>
+    <button onclick="addPickupRow()" style="background:#333; color:var(--gold); margin-top:10px;">+ הוסף נקודה</button>
     <br>
     <button onclick="savePickup()">שמור נקודות איסוף</button>
     <div class="msg" id="pickup-msg"></div>
@@ -80,10 +85,10 @@
 
     // הרשימה הקבועה שכרגע מוטמעת ב-index.html - משמשת ברירת מחדל אם עוד לא נשמר דבר בשרת
     const DEFAULT_PICKUP_POINTS = [
-        '<strong>בני ברק:</strong> ישיבת פוניבז\' (בניין אהל קדושים, רחוב ראב"ד)',
-        '<strong>בני ברק:</strong> רחוב ירושלים 36',
-        '<strong>גבעת זאב:</strong> רחוב המכבים',
-        '<strong>ירושלים:</strong> שכונת רמות, מירסקי 5'
+        { city: 'בני ברק', address: 'ישיבת פוניבז\' (בניין אהל קדושים, רחוב ראב"ד)' },
+        { city: 'בני ברק', address: 'רחוב ירושלים 36' },
+        { city: 'גבעת זאב', address: 'רחוב המכבים' },
+        { city: 'ירושלים', address: 'שכונת רמות, מירסקי 5' }
     ];
 
     const DEFAULT_PRICES = {
@@ -122,11 +127,11 @@
                 document.getElementById('locked').style.display = 'none';
                 document.getElementById('unlocked').style.display = 'block';
 
-                // ממלאים את תיבת נקודות ההפצה רק בכניסה - לא בכל רענון אוטומטי, כדי לא לדרוס עריכה באמצע
+                // ממלאים את שורות נקודות ההפצה רק בכניסה - לא בכל רענון אוטומטי, כדי לא לדרוס עריכה באמצע
                 const points = (data.pickupPoints && Array.isArray(data.pickupPoints) && data.pickupPoints.length > 0)
                     ? data.pickupPoints
                     : DEFAULT_PICKUP_POINTS;
-                document.getElementById('pickup-textarea').value = points.join('\n');
+                renderPickupRows(points);
 
                 // ממלאים את טבלת המחירים - גם כאן רק בכניסה, לא בכל רענון
                 const prices = Object.assign({}, DEFAULT_PRICES, data.prices || {});
@@ -143,7 +148,7 @@
                 refreshTimer = setInterval(() => loadStats(false), 20000);
             }
 
-            document.getElementById('online-count').innerText = data.online ?? '-';
+            document.getElementById('online-count').innerText = (data.online === null) ? 'לא זמין היום' : (data.online ?? '-');
             const today = new Date().toISOString().slice(0,10);
             document.getElementById('today-count').innerText = (data.days && data.days[today]) ?? 0;
 
@@ -159,16 +164,37 @@
         }
     }
 
+    function renderPickupRows(points) {
+        const container = document.getElementById('pickup-rows');
+        container.innerHTML = '';
+        points.forEach(p => addPickupRow(p.city || '', p.address || ''));
+    }
+
+    function addPickupRow(city, address) {
+        const container = document.getElementById('pickup-rows');
+        const row = document.createElement('div');
+        row.className = 'pickup-row';
+        row.innerHTML = `
+            <input type="text" class="city" placeholder="עיר" value="${city ? city.replace(/"/g,'&quot;') : ''}">
+            <input type="text" class="address" placeholder="כתובת" value="${address ? address.replace(/"/g,'&quot;') : ''}">
+            <button class="remove-row" onclick="this.parentElement.remove()">✖</button>
+        `;
+        container.appendChild(row);
+    }
+
     async function savePickup() {
-        const lines = document.getElementById('pickup-textarea').value
-            .split('\n').map(l => l.trim()).filter(l => l.length > 0);
+        const points = [...document.querySelectorAll('.pickup-row')].map(row => ({
+            city: row.querySelector('.city').value.trim(),
+            address: row.querySelector('.address').value.trim()
+        })).filter(p => p.city || p.address);
+
         const msgEl = document.getElementById('pickup-msg');
         msgEl.className = 'msg'; msgEl.innerText = 'שומר...';
         try {
             const res = await fetch(WEBHOOK_URL + 'save-pickup?secret=' + encodeURIComponent(SECRET), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ points: lines })
+                body: JSON.stringify({ points })
             });
             if (res.ok) {
                 msgEl.className = 'msg ok'; msgEl.innerText = 'נשמר בהצלחה! השינוי יופיע באתר תוך רגע.';
