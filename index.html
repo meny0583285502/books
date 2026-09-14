@@ -77,6 +77,8 @@
         .free-items-section h2 { color: var(--gold); font-size: 2rem; margin-bottom: 2rem; }
         .free-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
         .free-card { background: #111; border: 1px dashed var(--dark-gold); padding: 1.5rem; border-radius: 5px; font-size: 1.2rem; color: #eaeaea; display: flex; flex-direction: column; align-items: center; }
+        .free-download-link { display: inline-block; margin-top: 10px; background: var(--gold); color: #000; font-family: sans-serif; font-size: 0.9rem; font-weight: bold; padding: 6px 16px; border-radius: 20px; text-decoration: none; }
+        .free-download-link:hover { background: #fff; }
 
         .pickup-info { background: #151515; border-right: 4px solid var(--gold); padding: 1.5rem; margin-bottom: 3rem; border-radius: 4px; font-family: sans-serif; font-size: 1.1rem; line-height: 1.6; }
 
@@ -152,6 +154,22 @@
         #nedarim-iframe { width: 100%; height: 100%; border: none; }
 
         /* באנר מבצע אלול */
+        .promo-banner { max-width: 1100px; margin: 20px auto 0; padding: 0 1rem; }
+        .promo-banner-inner {
+            background: #000; border-radius: 10px; padding: 18px 20px; text-align: center;
+            cursor: pointer; position: relative; overflow: hidden;
+            border: 3px solid transparent;
+            background-image: linear-gradient(#000, #000), linear-gradient(90deg, var(--gold), #fff6d8, var(--dark-gold), #fff6d8, var(--gold));
+            background-origin: border-box; background-clip: padding-box, border-box;
+            background-size: 100% 100%, 300% 100%;
+            animation: promo-border-move 4s linear infinite;
+            box-shadow: 0 0 20px rgba(197, 160, 89, 0.35);
+        }
+        .promo-banner-inner:hover { box-shadow: 0 0 30px rgba(197, 160, 89, 0.6); }
+        @keyframes promo-border-move { 0% { background-position: 0 0, 0% 0; } 100% { background-position: 0 0, 300% 0; } }
+        .promo-banner-title { color: var(--gold); font-size: 1.6rem; font-weight: bold; margin: 0; }
+        .promo-banner-sub { color: #ddd; font-family: sans-serif; font-size: 0.95rem; margin-top: 4px; }
+
         .promo-modal-box { text-align: center; }
         .promo-modal-box h2 { color: var(--gold); font-size: 1.9rem; margin: 0 0 20px 0; }
         .promo-deal { background: #111; border: 1px solid var(--dark-gold); border-radius: 8px; padding: 16px; margin-bottom: 15px; }
@@ -161,12 +179,18 @@
         .promo-deal .deal-add-btn:hover { background: #fff; }
         .promo-bundle-tag { display: inline-block; background: var(--gold); color: #000; font-size: 0.8rem; font-weight: bold; padding: 2px 8px; border-radius: 4px; margin-right: 6px; font-family: sans-serif; }
         .sale-note { color: #f44336; font-size: 0.95rem; font-family: sans-serif; margin-top: 6px; }
-        .half-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 4rem; }
+        .half-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 4rem; align-items: stretch; }
         @media (max-width: 800px) { .half-row { grid-template-columns: 1fr; } }
         .half-card { background: var(--card-bg); border: 1px solid var(--border-color); padding: 1.5rem; border-radius: 8px; text-align: center; display: flex; flex-direction: column; }
+        .half-col { display: flex; flex-direction: column; gap: 20px; }
+        .half-col .half-card { flex: 1; justify-content: center; }
+        .pdf-preview-wrapper.book-size-lg { height: 340px; }
         .softcover-picker { justify-content: center; cursor: pointer; transition: 0.3s; border-color: var(--dark-gold); }
         .softcover-picker:hover { border-color: var(--gold); box-shadow: 0 5px 15px rgba(197, 160, 89, 0.15); }
         .soon-note { color: #999; font-family: sans-serif; font-size: 0.85rem; margin-top: 12px; border-top: 1px dashed #444; padding-top: 10px; }
+        .coming-soon-card { border-style: dashed; border-color: var(--dark-gold); opacity: 0.85; }
+        .coming-soon-card .price { color: #ccc; font-size: 1.3rem; margin: 8px 0; }
+        .soon-badge { display: inline-block; background: #333; color: var(--gold); border: 1px solid var(--gold); font-size: 0.85rem; font-weight: bold; padding: 3px 14px; border-radius: 20px; align-self: center; font-family: sans-serif; }
     </style>
 </head>
 <body>
@@ -174,6 +198,13 @@
     <div class="cart-floating-btn" onclick="openCart()">
         <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
         <div class="cart-badge" id="cart-badge">0</div>
+    </div>
+
+    <div class="promo-banner">
+        <div class="promo-banner-inner" onclick="openShemiratModal()">
+            <p class="promo-banner-title">🆕 שמירת הלשון - מבצע מיוחד 🆕</p>
+            <p class="promo-banner-sub">2 = ב-40 ₪ | לחצו לפרטים</p>
+        </div>
     </div>
 
     <header>
@@ -299,13 +330,13 @@
 
         <div class="half-row">
             <div class="half-card">
-                <div class="pdf-preview-wrapper book-size" onclick="openPdfViewer('שמירת הלשון.pdf')">
+                <div class="pdf-preview-wrapper book-size-lg" onclick="openPdfViewer('שמירת הלשון.pdf')">
                     <img src="שמירת הלשון.jpg" alt="שמירת הלשון"><div class="preview-overlay">לחץ להצגה</div>
                 </div>
                 <h3>שמירת הלשון</h3>
                 <div class="price-cart-area" style="border:none;">
                     <div class="price" id="disp-price-shemirat">25 ₪</div>
-                    <div class="sale-note">מבצע: 2 = ב-40 ₪</div>
+                    <div class="sale-note" id="disp-bundle-shemirat">מבצע: 2 = ב-40 ₪</div>
                     <div class="add-to-cart-controls">
                         <div class="qty-selector">
                             <button class="qty-btn" onclick="changeLocalQty(this, -1)">-</button>
@@ -317,13 +348,21 @@
                         </button>
                     </div>
                 </div>
-                <p class="soon-note">בקרוב: סט שמירת הלשון בכריכה רכה (2 כרכים)</p>
             </div>
 
-            <div class="half-card softcover-picker" onclick="openSoftcoverModal()">
-                <h3>כריכה רכה</h3>
-                <p style="font-family:sans-serif; color:#ccc; font-size:1.05rem;">מסילת ישרים ושערי תשובה</p>
-                <p style="font-family:sans-serif; color:var(--gold); font-size:0.95rem; margin-top:15px;">לחצו לבחירת ספר בודד או סט ולהוספה לעגלה</p>
+            <div class="half-col">
+                <div class="half-card softcover-picker" onclick="openSoftcoverModal()">
+                    <h3>כריכה רכה</h3>
+                    <p style="font-family:sans-serif; color:#ccc; font-size:1.05rem;">מסילת ישרים ושערי תשובה</p>
+                    <p style="font-family:sans-serif; color:var(--gold); font-size:0.95rem; margin-top:15px;">לחצו לבחירת ספר בודד או סט ולהוספה לעגלה</p>
+                </div>
+
+                <div class="half-card coming-soon-card">
+                    <h3>כריכה רכה - שמירת הלשון</h3>
+                    <p style="font-family:sans-serif; color:#ccc; font-size:0.95rem;">סט (2 כרכים)</p>
+                    <div class="price">20 ₪ לסט</div>
+                    <div class="soon-badge">בקרוב</div>
+                </div>
             </div>
         </div>
 
@@ -353,6 +392,13 @@
                         <img src="ברכון.jpg" alt="ברכון"><div class="preview-overlay">לחץ להצגה</div>
                     </div>
                     <span>ברכון - פניני חיזוק</span>
+                </div>
+                <div class="free-card">
+                    <div class="pdf-preview-wrapper free-size" onclick="openPdfViewer('לוח יומי שמירת הלשון.pdf')">
+                        <img src="לוח יומי שמירת הלשון.jpg" alt="לוח יומי שמירת הלשון"><div class="preview-overlay">לחץ להצגה</div>
+                    </div>
+                    <span>לוח יומי - שמירת הלשון</span>
+                    <a href="לוח יומי שמירת הלשון.pdf" download class="free-download-link">להורדה</a>
                 </div>
             </div>
         </div>
@@ -425,6 +471,18 @@
         <div class="modal-box pdf-container">
             <button class="close-modal-btn" onclick="closePdfViewer()">×</button>
             <iframe id="pdf-frame" src=""></iframe>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="shemirat-modal">
+        <div class="modal-box promo-modal-box">
+            <button class="close-modal-btn" onclick="closeShemiratModal()">×</button>
+            <h2>שמירת הלשון - מבצע מיוחד</h2>
+            <div class="promo-deal">
+                <div class="deal-title">שמירת הלשון</div>
+                <div class="deal-price" id="shemirat-modal-price">2 = ב-40 ₪</div>
+                <button class="deal-add-btn" onclick="addShemiratDealToCart()">הוסף 2 לעגלה</button>
+            </div>
         </div>
     </div>
 
@@ -584,6 +642,18 @@
         function openCart() { updateCartUI(); document.getElementById('cart-modal').classList.add('active'); }
         function closeCart() { document.getElementById('cart-modal').classList.remove('active'); }
 
+        function openShemiratModal() { document.getElementById('shemirat-modal').classList.add('active'); }
+        function closeShemiratModal() { document.getElementById('shemirat-modal').classList.remove('active'); }
+        function addShemiratDealToCart() {
+            let price = window.prices.shemirat;
+            let existingItem = cart.find(item => item.id === 'shemirat');
+            if (existingItem) existingItem.qty += 2;
+            else cart.push({ id: 'shemirat', title: 'שמירת הלשון', price, qty: 2 });
+            updateCartUI();
+            closeShemiratModal();
+            openCart();
+        }
+
         function openSoftcoverModal() { document.getElementById('softcover-modal').classList.add('active'); }
         function closeSoftcoverModal() { document.getElementById('softcover-modal').classList.remove('active'); }
         function addSoftcoverToCart(id, title) {
@@ -742,6 +812,33 @@
             } catch (e) { /* לא זמין - נשאר עם הרשימה הקבועה */ }
         }
         loadPickupPoints();
+
+        // טוענים מחירים ומבצעים מהשרת (אם נשמרו דרך פאנל הניהול) - אם לא, נשארים המחירים הקבועים בקוד
+        const PRICE_DISPLAY_IDS = {
+            mesilat: 'disp-price-mesilat', shaarei: 'disp-price-shaarei', orchot: 'disp-price-orchot',
+            chovot: 'disp-price-chovot', fullset: 'disp-price-fullset', shemirat: 'disp-price-shemirat'
+        };
+        function refreshPriceDisplays() {
+            Object.keys(PRICE_DISPLAY_IDS).forEach(id => {
+                const el = document.getElementById(PRICE_DISPLAY_IDS[id]);
+                if (el && window.prices[id] !== undefined) el.innerText = window.prices[id] + ' ₪';
+            });
+            const bundleEl = document.getElementById('disp-bundle-shemirat');
+            if (bundleEl && window.bundles.shemirat) {
+                bundleEl.innerText = `מבצע: ${window.bundles.shemirat.bundleQty} = ב-${window.bundles.shemirat.bundlePrice} ₪`;
+            }
+        }
+        async function loadPricesFromServer() {
+            try {
+                const res = await fetch(WEBHOOK_URL + 'prices');
+                if (!res.ok) return;
+                const data = await res.json();
+                if (data.prices) Object.assign(window.prices, data.prices);
+                if (data.bundles) Object.assign(window.bundles, data.bundles);
+                refreshPriceDisplays();
+            } catch (e) { /* לא זמין - נשארים המחירים הקבועים */ }
+        }
+        loadPricesFromServer();
 
         // מונה מבקרים - "פינג" קצר בכניסה לאתר ובכל 60 שניות כדי לשמור על סטטוס "מחובר עכשיו".
         // לא נשלח שום מידע אישי - רק פנייה אנונימית לצורך ספירה בצד השרת.
