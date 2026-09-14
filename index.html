@@ -184,9 +184,10 @@
         .half-card { background: var(--card-bg); border: 1px solid var(--border-color); padding: 1.5rem; border-radius: 8px; text-align: center; display: flex; flex-direction: column; }
         .half-col { display: flex; flex-direction: column; gap: 20px; }
         .half-col .half-card { flex: 1; justify-content: center; }
-        .pdf-preview-wrapper.book-size-lg { height: 340px; }
+        .pdf-preview-wrapper.book-size-lg { height: 260px; }
         .softcover-picker { justify-content: center; cursor: pointer; transition: 0.3s; border-color: var(--dark-gold); }
         .softcover-picker:hover { border-color: var(--gold); box-shadow: 0 5px 15px rgba(197, 160, 89, 0.15); }
+        .mini-thumb { width: 56px; height: 56px; object-fit: cover; border-radius: 6px; border: 1px solid var(--dark-gold); display: block; margin: 0 auto 10px; opacity: 0.9; }
         .soon-note { color: #999; font-family: sans-serif; font-size: 0.85rem; margin-top: 12px; border-top: 1px dashed #444; padding-top: 10px; }
         .coming-soon-card { border-style: dashed; border-color: var(--dark-gold); opacity: 0.85; }
         .coming-soon-card .price { color: #ccc; font-size: 1.3rem; margin: 8px 0; }
@@ -352,21 +353,17 @@
 
             <div class="half-col">
                 <div class="half-card softcover-picker" onclick="openSoftcoverModal()">
-                    <div class="pdf-preview-wrapper free-size">
-                        <img src="מסי ושעת רכה.jpg" alt="כריכה רכה - מסילת ישרים ושערי תשובה">
-                    </div>
+                    <img src="מסי ושעת רכה.jpg" alt="כריכה רכה - מסילת ישרים ושערי תשובה" class="mini-thumb">
                     <h3>כריכה רכה</h3>
                     <p style="font-family:sans-serif; color:#ccc; font-size:1.05rem;">מסילת ישרים ושערי תשובה</p>
                     <p style="font-family:sans-serif; color:var(--gold); font-size:0.95rem; margin-top:15px;">לחצו לבחירת ספר בודד או סט ולהוספה לעגלה</p>
                 </div>
 
                 <div class="half-card coming-soon-card">
-                    <div class="pdf-preview-wrapper free-size">
-                        <img src="שמירת הלשון רכה.jpg" alt="כריכה רכה - שמירת הלשון">
-                    </div>
+                    <img src="שמירת הלשון רכה.jpg" alt="כריכה רכה - שמירת הלשון" class="mini-thumb">
                     <h3>כריכה רכה - שמירת הלשון</h3>
                     <p style="font-family:sans-serif; color:#ccc; font-size:0.95rem;">סט (2 כרכים)</p>
-                    <div class="price">20 ₪ לסט</div>
+                    <div class="price" id="disp-price-shemirat-soft-set">20 ₪ לסט</div>
                     <div class="soon-badge">בקרוב</div>
                 </div>
             </div>
@@ -576,7 +573,8 @@
             shemirat: 25,
             mesilat_soft: 10,
             shaarei_soft: 10,
-            softset: 20
+            softset: 20,
+            shemirat_soft_set: 20
         };
 
         // מבצע נוכחי: שמירת הלשון - 2 יחידות ב-40 ₪ (במקום 50). כל N יחידות → מחיר חבילה קבוע, יתרה במחיר רגיל.
@@ -829,10 +827,23 @@
                 const el = document.getElementById(PRICE_DISPLAY_IDS[id]);
                 if (el && window.prices[id] !== undefined) el.innerText = window.prices[id] + ' ₪';
             });
-            const bundleEl = document.getElementById('disp-bundle-shemirat');
-            if (bundleEl && window.bundles.shemirat) {
-                bundleEl.innerText = `מבצע: ${window.bundles.shemirat.bundleQty} = ב-${window.bundles.shemirat.bundlePrice} ₪`;
+            const softSetEl = document.getElementById('disp-price-shemirat-soft-set');
+            if (softSetEl && window.prices.shemirat_soft_set !== undefined) {
+                softSetEl.innerText = window.prices.shemirat_soft_set + ' ₪ לסט';
             }
+            // מציגים הערת "מבצע" לכל מוצר שיש לו כרגע מבצע פעיל ויש לו מקום ייעודי בעמוד
+            Object.keys(window.bundles).forEach(productId => {
+                const bundleEl = document.getElementById('disp-bundle-' + productId);
+                if (bundleEl) {
+                    bundleEl.innerText = `מבצע: ${window.bundles[productId].bundleQty} = ב-${window.bundles[productId].bundlePrice} ₪`;
+                    bundleEl.style.display = '';
+                }
+            });
+            // מכבים הערת מבצע במוצרים שכבר אין להם מבצע פעיל (הוסר בניהול)
+            document.querySelectorAll('.sale-note[id^="disp-bundle-"]').forEach(el => {
+                const productId = el.id.replace('disp-bundle-', '');
+                if (!window.bundles[productId]) el.style.display = 'none';
+            });
         }
         async function loadPricesFromServer() {
             try {
@@ -840,7 +851,9 @@
                 if (!res.ok) return;
                 const data = await res.json();
                 if (data.prices) Object.assign(window.prices, data.prices);
-                if (data.bundles) Object.assign(window.bundles, data.bundles);
+                // בניגוד למחירים - מבצעים מוחלפים לגמרי (לא ממוזגים), כדי שהסרת מבצע בניהול
+                // תיעלם גם באתר, ולא תישאר "תקועה" מברירת המחדל הקבועה בקוד.
+                if (data.bundles !== null && data.bundles !== undefined) window.bundles = data.bundles;
                 refreshPriceDisplays();
             } catch (e) { /* לא זמין - נשארים המחירים הקבועים */ }
         }
