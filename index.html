@@ -352,12 +352,18 @@
 
             <div class="half-col">
                 <div class="half-card softcover-picker" onclick="openSoftcoverModal()">
+                    <div class="pdf-preview-wrapper free-size">
+                        <img src="מסי ושעת רכה.jpg" alt="כריכה רכה - מסילת ישרים ושערי תשובה">
+                    </div>
                     <h3>כריכה רכה</h3>
                     <p style="font-family:sans-serif; color:#ccc; font-size:1.05rem;">מסילת ישרים ושערי תשובה</p>
                     <p style="font-family:sans-serif; color:var(--gold); font-size:0.95rem; margin-top:15px;">לחצו לבחירת ספר בודד או סט ולהוספה לעגלה</p>
                 </div>
 
                 <div class="half-card coming-soon-card">
+                    <div class="pdf-preview-wrapper free-size">
+                        <img src="שמירת הלשון רכה.jpg" alt="כריכה רכה - שמירת הלשון">
+                    </div>
                     <h3>כריכה רכה - שמירת הלשון</h3>
                     <p style="font-family:sans-serif; color:#ccc; font-size:0.95rem;">סט (2 כרכים)</p>
                     <div class="price">20 ₪ לסט</div>
@@ -806,7 +812,7 @@
                 if (data && Array.isArray(data.points) && data.points.length > 0) {
                     const list = document.getElementById('pickup-list');
                     list.innerHTML = data.points.map(p =>
-                        `<li style="margin-bottom:8px;"><span style="color:var(--gold);">•</span> ${p}</li>`
+                        `<li style="margin-bottom:8px;"><span style="color:var(--gold);">•</span> <strong>${p.city}:</strong> ${p.address}</li>`
                     ).join('');
                 }
             } catch (e) { /* לא זמין - נשאר עם הרשימה הקבועה */ }
