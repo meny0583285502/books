@@ -108,7 +108,12 @@
         try {
             const res = await fetch(WEBHOOK_URL + 'stats?secret=' + encodeURIComponent(SECRET));
             if (!res.ok) {
-                if (isUnlockAttempt) document.getElementById('lock-msg').innerText = 'סיסמה שגויה או שהשרת עדיין לא מוגדר.';
+                if (isUnlockAttempt) {
+                    let detail = '';
+                    try { const errData = await res.json(); detail = errData.details ? ' (' + errData.details + ')' : ''; } catch (e) {}
+                    document.getElementById('lock-msg').innerText =
+                        (res.status === 403 ? 'סיסמה שגויה.' : 'שגיאת שרת' + detail + '.');
+                }
                 return;
             }
             const data = await res.json();
