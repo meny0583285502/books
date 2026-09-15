@@ -257,6 +257,7 @@
                     <h3>מסילת ישרים</h3>
                     <div class="price-cart-area">
                         <div class="price" id="disp-price-mesilat">25 ₪</div>
+                        <div class="sale-note" id="disp-bundle-mesilat" style="display:none;"></div>
                         <div class="add-to-cart-controls">
                             <div class="qty-selector">
                                 <button class="qty-btn" onclick="changeLocalQty(this, -1)" aria-label="הפחת כמות">-</button>
@@ -278,6 +279,7 @@
                     <h3>שערי תשובה</h3>
                     <div class="price-cart-area">
                         <div class="price" id="disp-price-shaarei">25 ₪</div>
+                        <div class="sale-note" id="disp-bundle-shaarei" style="display:none;"></div>
                         <div class="add-to-cart-controls">
                             <div class="qty-selector">
                                 <button class="qty-btn" onclick="changeLocalQty(this, -1)" aria-label="הפחת כמות">-</button>
@@ -299,6 +301,7 @@
                     <h3>ארחות צדיקים</h3>
                     <div class="price-cart-area">
                         <div class="price" id="disp-price-orchot">25 ₪</div>
+                        <div class="sale-note" id="disp-bundle-orchot" style="display:none;"></div>
                         <div class="add-to-cart-controls">
                             <div class="qty-selector">
                                 <button class="qty-btn" onclick="changeLocalQty(this, -1)" aria-label="הפחת כמות">-</button>
@@ -320,6 +323,7 @@
                     <h3>חובות הלבבות</h3>
                     <div class="price-cart-area">
                         <div class="price" id="disp-price-chovot">50 ₪</div>
+                        <div class="sale-note" id="disp-bundle-chovot" style="display:none;"></div>
                         <div class="add-to-cart-controls">
                             <div class="qty-selector">
                                 <button class="qty-btn" onclick="changeLocalQty(this, -1)" aria-label="הפחת כמות">-</button>
@@ -342,6 +346,7 @@
             
             <div class="price-cart-area" style="border:none; margin-top:0;">
                 <div class="set-price" id="disp-price-fullset" style="margin-bottom: 20px;">120 ₪</div>
+                <div class="sale-note" id="disp-bundle-fullset" style="display:none; text-align:center;"></div>
                 <div class="add-to-cart-controls" style="justify-content: center;">
                     <div class="qty-selector">
                         <button class="qty-btn" onclick="changeLocalQty(this, -1)" aria-label="הפחת כמות">-</button>
@@ -436,10 +441,19 @@
             <h3>מידע על נקודות איסוף</h3>
             <p><strong>שימו לב: כרגע אין משלוחים להזמנות קטנות.</strong> ניתן לאסוף בתיאום מראש במוקדים הבאים:</p>
             <ul style="list-style-type:none; padding:0;" id="pickup-list">
-                <li style="margin-bottom:8px;"><span style="color:var(--gold);">•</span> <strong>בני ברק:</strong> ישיבת פוניבז' (בניין אהל קדושים, רחוב ראב"ד)</li>
-                <li style="margin-bottom:8px;"><span style="color:var(--gold);">•</span> <strong>בני ברק:</strong> רחוב ירושלים 36</li>
-                <li style="margin-bottom:8px;"><span style="color:var(--gold);">•</span> <strong>גבעת זאב:</strong> רחוב המכבים</li>
-                <li style="margin-bottom:8px;"><span style="color:var(--gold);">•</span> <strong>ירושלים:</strong> שכונת רמות, מירסקי 5</li>
+                <li style="margin-bottom:8px;"><span style="color:var(--gold);">•</span> <strong>בני ברק:</strong> ישיבת פוניבז' באהל קדושים - בקומת היכל הגרח"ש</li>
+                <li style="margin-bottom:8px;"><span style="color:var(--gold);">•</span> <strong>בני ברק:</strong> ראב"ד 17 - בית מרן ראש הישיבה זללה"ה - בארון המכירות הקבוע</li>
+                <li style="margin-bottom:8px;"><span style="color:var(--gold);">•</span> <strong>בני ברק:</strong> ירושלים 36, משפחת מרגליות - 0527648389</li>
+                <li style="margin-bottom:8px;"><span style="color:var(--gold);">•</span> <strong>ירושלים:</strong> מירסקי 5 - ישיבת ארחות יושר - 0583285502</li>
+                <li style="margin-bottom:8px;"><span style="color:var(--gold);">•</span> <strong>ירושלים:</strong> פישל 19 - משפחת מרגליות - 0504199906</li>
+                <li style="margin-bottom:8px;"><span style="color:var(--gold);">•</span> <strong>ירושלים:</strong> המ"ג 37 - משפחת פרידמן - 0527111307</li>
+                <li style="margin-bottom:8px;"><span style="color:var(--gold);">•</span> <strong>גבעת זאב:</strong> המכבים - משפחת מורגנשטרן - 0583285502</li>
+                <li style="margin-bottom:8px;"><span style="color:var(--gold);">•</span> <strong>מודיעין עילית:</strong> חפץ חיים 13 - משפחת אברמוביץ - 0548470643</li>
+                <li style="margin-bottom:8px;"><span style="color:var(--gold);">•</span> <strong>טלזסטון:</strong> הרי"ף 15, משפחת טריבוסר - 0548414453</li>
+                <li style="margin-bottom:8px;"><span style="color:var(--gold);">•</span> <strong>בית שמש:</strong> משפחת ציטרון - 0548411454</li>
+                <li style="margin-bottom:8px;"><span style="color:var(--gold);">•</span> <strong>בית שמש:</strong> בן איש חי 27 - משפחת וקסלר - 0548488951</li>
+                <li style="margin-bottom:8px;"><span style="color:var(--gold);">•</span> <strong>בית שמש:</strong> ריש לקיש 14 - משפחת זייציק - 0556796345</li>
+                <li style="margin-bottom:8px;"><span style="color:var(--gold);">•</span> <strong>אלעד:</strong> בעלי התוספות - משפחת מובשוביץ - 0583244772</li>
             </ul>
         </div>
 
