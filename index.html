@@ -840,19 +840,41 @@
         function toggleAudio() { if (audioEl.paused) { audioEl.play(); widgetEl.classList.add('playing'); } else { audioEl.pause(); widgetEl.classList.remove('playing'); } }
         audioEl.onended = function() { widgetEl.classList.remove('playing'); };
 
-        // טוענים את נקודות ההפצה מהשרת (אם קיים endpoint /pickup) - אם לא זמין, נשארת הרשימה הקבועה שבקוד
+        // עוזר כללי: מנסה fetch, ננסה שוב פעם אחת אחרי כשל (קליטה חלשה/רשת רגעית)
+        async function fetchWithRetry(url, options) {
+            try {
+                return await fetch(url, options);
+            } catch (e) {
+                await new Promise(r => setTimeout(r, 1500));
+                return await fetch(url, options); // אם זה ייכשל שוב, הקריאה תזרוק החוצה - זה בסדר, נתפוס למעלה
+            }
+        }
+
+        // טוענים את נקודות ההפצה מהשרת. אם הבקשה נכשלת (קליטה חלשה, או ש-KV עוד לא הפיץ
+        // עדכון טרי - יכול לקחת עד כדקה), מציגים את הגרסה האחרונה שכן הצלחנו לקבל בעבר
+        // (שמורה בדפדפן), ורק אם גם זו לא קיימת - נופלים לרשימה הקבועה שבקוד.
+        function renderPickupList(points) {
+            const list = document.getElementById('pickup-list');
+            list.innerHTML = points.map(p =>
+                `<li style="margin-bottom:8px;"><span style="color:var(--gold);">•</span> <strong>${p.city}:</strong> ${p.address}</li>`
+            ).join('');
+        }
         async function loadPickupPoints() {
             try {
-                const res = await fetch(WEBHOOK_URL + 'pickup');
-                if (!res.ok) return;
+                const res = await fetchWithRetry(WEBHOOK_URL + 'pickup');
+                if (!res.ok) throw new Error('bad response');
                 const data = await res.json();
                 if (data && Array.isArray(data.points) && data.points.length > 0) {
-                    const list = document.getElementById('pickup-list');
-                    list.innerHTML = data.points.map(p =>
-                        `<li style="margin-bottom:8px;"><span style="color:var(--gold);">•</span> <strong>${p.city}:</strong> ${p.address}</li>`
-                    ).join('');
+                    renderPickupList(data.points);
+                    localStorage.setItem('cached-pickup-points', JSON.stringify(data.points));
                 }
-            } catch (e) { /* לא זמין - נשאר עם הרשימה הקבועה */ }
+            } catch (e) {
+                const cached = localStorage.getItem('cached-pickup-points');
+                if (cached) {
+                    try { renderPickupList(JSON.parse(cached)); } catch (e2) {}
+                }
+                // אם גם אין cache - נשארת הרשימה הקבועה שכבר כתובה ב-HTML כברירת מחדל
+            }
         }
         loadPickupPoints();
 
@@ -886,25 +908,40 @@
         }
         async function loadPricesFromServer() {
             try {
-                const res = await fetch(WEBHOOK_URL + 'prices');
-                if (!res.ok) return;
+                const res = await fetchWithRetry(WEBHOOK_URL + 'prices');
+                if (!res.ok) throw new Error('bad response');
                 const data = await res.json();
                 if (data.prices) Object.assign(window.prices, data.prices);
                 // בניגוד למחירים - מבצעים מוחלפים לגמרי (לא ממוזגים), כדי שהסרת מבצע בניהול
                 // תיעלם גם באתר, ולא תישאר "תקועה" מברירת המחדל הקבועה בקוד.
                 if (data.bundles !== null && data.bundles !== undefined) window.bundles = data.bundles;
                 refreshPriceDisplays();
-            } catch (e) { /* לא זמין - נשארים המחירים הקבועים */ }
+                localStorage.setItem('cached-prices', JSON.stringify({ prices: data.prices, bundles: data.bundles }));
+            } catch (e) {
+                const cached = localStorage.getItem('cached-prices');
+                if (cached) {
+                    try {
+                        const c = JSON.parse(cached);
+                        if (c.prices) Object.assign(window.prices, c.prices);
+                        if (c.bundles !== null && c.bundles !== undefined) window.bundles = c.bundles;
+                        refreshPriceDisplays();
+                    } catch (e2) {}
+                }
+            }
         }
         loadPricesFromServer();
 
-        // מונה מבקרים - "פינג" קצר בכניסה לאתר ובכל 60 שניות כדי לשמור על סטטוס "מחובר עכשיו".
+        // מונה מבקרים - כתיבה בכניסה לדף, אבל לא יותר מפעם אחת כל 5 דקות לאותו מבקר
+        // (אפילו אם הוא רענן את הדף כמה פעמים, או פתח כמה טאבים) - כדי לחסוך עוד יותר
+        // במכסת הכתיבה היומית המשותפת עם שמירות הניהול האמיתיות (נקודות הפצה, מחירים).
         // לא נשלח שום מידע אישי - רק פנייה אנונימית לצורך ספירה בצד השרת.
         function pingVisit() {
+            const last = parseInt(localStorage.getItem('last-ping-time') || '0', 10);
+            if (Date.now() - last < 5 * 60 * 1000) return; // כבר פינגנו לאחרונה - מדלגים
+            localStorage.setItem('last-ping-time', Date.now());
             try { fetch(WEBHOOK_URL + 'track', { method: 'POST' }); } catch (e) {}
         }
         pingVisit();
-        setInterval(pingVisit, 120000);
 
         // ============ תפריט נגישות ============
         function toggleA11yPanel() {
