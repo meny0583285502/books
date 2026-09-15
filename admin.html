@@ -65,6 +65,7 @@
     <p style="color:#aaa; font-size:0.9rem;">לכל נקודת איסוף: עיר (תודגש אוטומטית) וכתובת.</p>
     <div id="pickup-rows"></div>
     <button onclick="addPickupRow()" style="background:#333; color:var(--gold); margin-top:10px;">+ הוסף נקודה</button>
+    <button onclick="loadNewPickupList()" style="background:#332222; color:#ff9999; margin-top:10px;">טען רשימה מעודכנת (12 נקודות) - מחליף את הקיים</button>
     <br>
     <button onclick="savePickup()">שמור נקודות איסוף</button>
     <div class="msg" id="pickup-msg"></div>
@@ -93,10 +94,19 @@
 
     // הרשימה הקבועה שכרגע מוטמעת ב-index.html - משמשת ברירת מחדל אם עוד לא נשמר דבר בשרת
     const DEFAULT_PICKUP_POINTS = [
-        { city: 'בני ברק', address: 'ישיבת פוניבז\' (בניין אהל קדושים, רחוב ראב"ד)' },
-        { city: 'בני ברק', address: 'רחוב ירושלים 36' },
-        { city: 'גבעת זאב', address: 'רחוב המכבים' },
-        { city: 'ירושלים', address: 'שכונת רמות, מירסקי 5' }
+        { city: 'בני ברק', address: "ישיבת פוניבז' באהל קדושים - בקומת היכל הגרח\"ש" },
+        { city: 'בני ברק', address: 'ראב"ד 17 - בית מרן ראש הישיבה זללה"ה - בארון המכירות הקבוע' },
+        { city: 'בני ברק', address: 'ירושלים 36, משפחת מרגליות - 0527648389' },
+        { city: 'ירושלים', address: 'מירסקי 5 - ישיבת ארחות יושר - 0583285502' },
+        { city: 'ירושלים', address: 'פישל 19 - משפחת מרגליות - 0504199906' },
+        { city: 'ירושלים', address: 'המ"ג 37 - משפחת פרידמן - 0527111307' },
+        { city: 'גבעת זאב', address: 'המכבים - משפחת מורגנשטרן - 0583285502' },
+        { city: 'מודיעין עילית', address: 'חפץ חיים 13 - משפחת אברמוביץ - 0548470643' },
+        { city: 'טלזסטון', address: 'הרי"ף 15, משפחת טריבוסר - 0548414453' },
+        { city: 'בית שמש', address: 'משפחת ציטרון - 0548411454' },
+        { city: 'בית שמש', address: 'בן איש חי 27 - משפחת וקסלר - 0548488951' },
+        { city: 'בית שמש', address: 'ריש לקיש 14 - משפחת זייציק - 0556796345' },
+        { city: 'אלעד', address: 'בעלי התוספות - משפחת מובשוביץ - 0583244772' }
     ];
 
     const DEFAULT_PRICES = {
@@ -177,6 +187,11 @@
         const container = document.getElementById('pickup-rows');
         container.innerHTML = '';
         points.forEach(p => addPickupRow(p.city || '', p.address || ''));
+    }
+
+    function loadNewPickupList() {
+        if (!confirm('זה יחליף את כל נקודות ההפצה המוצגות כרגע ב-13 הנקודות המעודכנות. להמשיך?')) return;
+        renderPickupRows(DEFAULT_PICKUP_POINTS);
     }
 
     function addPickupRow(city, address) {
