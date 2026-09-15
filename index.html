@@ -11,6 +11,32 @@
     <style>
         body { font-family: 'Frank Ruhl Libre', 'Times New Roman', serif; background-color: #0d0d0d; color: #f2ebd9; margin: 0; padding: 0; overflow-x: hidden; }
         :root { --gold: #c5a059; --dark-gold: #967639; --card-bg: #1a1a1a; --border-color: #333; }
+
+        /* כפתור ותפריט נגישות */
+        .a11y-btn {
+            position: fixed; bottom: 30px; right: 30px; width: 56px; height: 56px; border-radius: 50%;
+            background: #1a1a1a; border: 2px solid var(--gold); color: var(--gold); z-index: 2000;
+            display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.6rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+        }
+        .a11y-panel {
+            display: none; position: fixed; bottom: 95px; right: 30px; width: 260px; background: #1a1a1a;
+            border: 2px solid var(--gold); border-radius: 8px; padding: 1rem; z-index: 2000; font-family: sans-serif;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.7);
+        }
+        .a11y-panel.open { display: block; }
+        .a11y-panel h4 { color: var(--gold); margin: 0 0 12px 0; font-size: 1.05rem; text-align: center; }
+        .a11y-panel button { display: flex; align-items: center; gap: 8px; width: 100%; background: #222; color: #fff; border: 1px solid #444; padding: 10px; border-radius: 4px; margin-bottom: 8px; cursor: pointer; font-size: 0.95rem; text-align: right; }
+        .a11y-panel button:hover { border-color: var(--gold); }
+        .a11y-panel button.active-toggle { background: var(--gold); color: #000; border-color: var(--gold); }
+        .a11y-panel a { display: block; text-align: center; color: var(--gold); font-size: 0.85rem; margin-top: 8px; }
+
+        /* מצבי נגישות */
+        body.a11y-contrast { background: #000 !important; color: #fff !important; }
+        body.a11y-contrast * { background-color: #000 !important; color: #fff !important; border-color: #fff !important; }
+        body.a11y-contrast a, body.a11y-contrast .price, body.a11y-contrast h1, body.a11y-contrast h2, body.a11y-contrast h3 { color: #ffd700 !important; }
+        body.a11y-underline a { text-decoration: underline !important; }
+        body.a11y-pause-anim, body.a11y-pause-anim * { animation: none !important; transition: none !important; }
         
         header { background: linear-gradient(to bottom, #151515, #000); text-align: center; padding: 4rem 1rem 3rem; border-bottom: 2px solid var(--gold); position: relative; }
         .header-rabbi-img { position: absolute; top: 30px; right: 40px; width: 180px; height: 240px; border: 3px solid var(--gold); border-radius: 12px; object-fit: cover; box-shadow: 0 8px 25px rgba(0,0,0,0.8); background-color: #222; transition: transform 0.3s ease; }
@@ -196,7 +222,7 @@
 </head>
 <body>
 
-    <div class="cart-floating-btn" onclick="openCart()">
+    <div class="cart-floating-btn" onclick="openCart()" role="button" tabindex="0" aria-label="פתח עגלת קניות" onkeypress="if(event.key==='Enter')openCart()">
         <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
         <div class="cart-badge" id="cart-badge">0</div>
     </div>
@@ -233,9 +259,9 @@
                         <div class="price" id="disp-price-mesilat">25 ₪</div>
                         <div class="add-to-cart-controls">
                             <div class="qty-selector">
-                                <button class="qty-btn" onclick="changeLocalQty(this, -1)">-</button>
+                                <button class="qty-btn" onclick="changeLocalQty(this, -1)" aria-label="הפחת כמות">-</button>
                                 <input type="text" class="qty-input" value="1" readonly>
-                                <button class="qty-btn" onclick="changeLocalQty(this, 1)">+</button>
+                                <button class="qty-btn" onclick="changeLocalQty(this, 1)" aria-label="הוסף כמות">+</button>
                             </div>
                             <button class="add-btn" onclick="addToCart('mesilat', 'מסילת ישרים', this)">
                                 <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg> <span>הוסף</span>
@@ -254,9 +280,9 @@
                         <div class="price" id="disp-price-shaarei">25 ₪</div>
                         <div class="add-to-cart-controls">
                             <div class="qty-selector">
-                                <button class="qty-btn" onclick="changeLocalQty(this, -1)">-</button>
+                                <button class="qty-btn" onclick="changeLocalQty(this, -1)" aria-label="הפחת כמות">-</button>
                                 <input type="text" class="qty-input" value="1" readonly>
-                                <button class="qty-btn" onclick="changeLocalQty(this, 1)">+</button>
+                                <button class="qty-btn" onclick="changeLocalQty(this, 1)" aria-label="הוסף כמות">+</button>
                             </div>
                             <button class="add-btn" onclick="addToCart('shaarei', 'שערי תשובה', this)">
                                 <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg> <span>הוסף</span>
@@ -275,9 +301,9 @@
                         <div class="price" id="disp-price-orchot">25 ₪</div>
                         <div class="add-to-cart-controls">
                             <div class="qty-selector">
-                                <button class="qty-btn" onclick="changeLocalQty(this, -1)">-</button>
+                                <button class="qty-btn" onclick="changeLocalQty(this, -1)" aria-label="הפחת כמות">-</button>
                                 <input type="text" class="qty-input" value="1" readonly>
-                                <button class="qty-btn" onclick="changeLocalQty(this, 1)">+</button>
+                                <button class="qty-btn" onclick="changeLocalQty(this, 1)" aria-label="הוסף כמות">+</button>
                             </div>
                             <button class="add-btn" onclick="addToCart('orchot', 'ארחות צדיקים', this)">
                                 <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg> <span>הוסף</span>
@@ -296,9 +322,9 @@
                         <div class="price" id="disp-price-chovot">50 ₪</div>
                         <div class="add-to-cart-controls">
                             <div class="qty-selector">
-                                <button class="qty-btn" onclick="changeLocalQty(this, -1)">-</button>
+                                <button class="qty-btn" onclick="changeLocalQty(this, -1)" aria-label="הפחת כמות">-</button>
                                 <input type="text" class="qty-input" value="1" readonly>
-                                <button class="qty-btn" onclick="changeLocalQty(this, 1)">+</button>
+                                <button class="qty-btn" onclick="changeLocalQty(this, 1)" aria-label="הוסף כמות">+</button>
                             </div>
                             <button class="add-btn" onclick="addToCart('chovot', 'חובות הלבבות', this)">
                                 <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg> <span>הוסף</span>
@@ -318,9 +344,9 @@
                 <div class="set-price" id="disp-price-fullset" style="margin-bottom: 20px;">120 ₪</div>
                 <div class="add-to-cart-controls" style="justify-content: center;">
                     <div class="qty-selector">
-                        <button class="qty-btn" onclick="changeLocalQty(this, -1)">-</button>
+                        <button class="qty-btn" onclick="changeLocalQty(this, -1)" aria-label="הפחת כמות">-</button>
                         <input type="text" class="qty-input" value="1" readonly>
-                        <button class="qty-btn" onclick="changeLocalQty(this, 1)">+</button>
+                        <button class="qty-btn" onclick="changeLocalQty(this, 1)" aria-label="הוסף כמות">+</button>
                     </div>
                     <button class="add-btn" onclick="addToCart('fullset', 'סט ספרי מוסר (מלא)', this)">
                         <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg> <span>הוסף לעגלה</span>
@@ -340,9 +366,9 @@
                     <div class="sale-note" id="disp-bundle-shemirat">מבצע: 2 = ב-40 ₪</div>
                     <div class="add-to-cart-controls">
                         <div class="qty-selector">
-                            <button class="qty-btn" onclick="changeLocalQty(this, -1)">-</button>
+                            <button class="qty-btn" onclick="changeLocalQty(this, -1)" aria-label="הפחת כמות">-</button>
                             <input type="text" class="qty-input" value="1" readonly>
-                            <button class="qty-btn" onclick="changeLocalQty(this, 1)">+</button>
+                            <button class="qty-btn" onclick="changeLocalQty(this, 1)" aria-label="הוסף כמות">+</button>
                         </div>
                         <button class="add-btn" onclick="addToCart('shemirat', 'שמירת הלשון', this)">
                             <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg> <span>הוסף</span>
@@ -455,6 +481,7 @@
     <footer>
         <div class="distributor">הפצה ראשית: יפה נוף</div>
         <p>פיתוח תשפ"ו</p>
+        <p><a href="accessibility.html" style="color:var(--gold); font-family:sans-serif; font-size:0.9rem;">הצהרת נגישות</a></p>
     </footer>
 
     <audio id="rabbi-audio" src="אני מבטיח.MP3" preload="auto"></audio>
@@ -472,14 +499,14 @@
 
     <div class="modal-overlay" id="pdf-modal">
         <div class="modal-box pdf-container">
-            <button class="close-modal-btn" onclick="closePdfViewer()">×</button>
+            <button class="close-modal-btn" onclick="closePdfViewer()" aria-label="סגור חלון">×</button>
             <iframe id="pdf-frame" src=""></iframe>
         </div>
     </div>
 
     <div class="modal-overlay" id="shemirat-modal">
         <div class="modal-box promo-modal-box">
-            <button class="close-modal-btn" onclick="closeShemiratModal()">×</button>
+            <button class="close-modal-btn" onclick="closeShemiratModal()" aria-label="סגור חלון">×</button>
             <h2>שמירת הלשון - מבצע מיוחד</h2>
             <div class="promo-deal">
                 <div class="deal-title">שמירת הלשון</div>
@@ -491,7 +518,7 @@
 
     <div class="modal-overlay" id="softcover-modal">
         <div class="modal-box promo-modal-box">
-            <button class="close-modal-btn" onclick="closeSoftcoverModal()">×</button>
+            <button class="close-modal-btn" onclick="closeSoftcoverModal()" aria-label="סגור חלון">×</button>
             <h2>כריכה רכה</h2>
 
             <div class="promo-deal">
@@ -516,7 +543,7 @@
 
     <div class="modal-overlay" id="cart-modal">
         <div class="modal-box">
-            <button class="close-modal-btn" onclick="closeCart()">×</button>
+            <button class="close-modal-btn" onclick="closeCart()" aria-label="סגור חלון">×</button>
             <h2 style="color:var(--gold); margin-top:0; font-size:2rem; border-bottom:1px solid #333; padding-bottom:10px;">עגלת קניות</h2>
             <div id="cart-items-container"></div>
             <div class="cart-total">סך הכל: <span id="cart-total-price">0</span> ₪</div>
@@ -526,7 +553,7 @@
 
     <div class="modal-overlay" id="checkout-modal">
         <div class="modal-box">
-            <button class="close-modal-btn" onclick="closeCheckout()">×</button>
+            <button class="close-modal-btn" onclick="closeCheckout()" aria-label="סגור חלון">×</button>
             
             <div id="checkout-form-area">
                 <h2 style="color:var(--gold); margin-top:0; font-size:2rem;">פרטי הזמנה</h2>
@@ -556,6 +583,18 @@
                 <p style="color:var(--gold); margin-top:20px; font-size:1.5rem;">תודה רבה!</p>
             </div>
         </div>
+    </div>
+
+    <button class="a11y-btn" onclick="toggleA11yPanel()" aria-label="תפריט נגישות" title="נגישות">♿</button>
+    <div class="a11y-panel" id="a11y-panel" role="dialog" aria-label="אפשרויות נגישות">
+        <h4>אפשרויות נגישות</h4>
+        <button id="a11y-font-plus" onclick="a11yFontSize(1)">א+ הגדל טקסט</button>
+        <button id="a11y-font-minus" onclick="a11yFontSize(-1)">א- הקטן טקסט</button>
+        <button id="a11y-contrast-btn" onclick="a11yToggle('a11y-contrast', this)">ניגודיות גבוהה</button>
+        <button id="a11y-underline-btn" onclick="a11yToggle('a11y-underline', this)">הדגשת קישורים</button>
+        <button id="a11y-pause-btn" onclick="a11yToggle('a11y-pause-anim', this)">עצירת אנימציות</button>
+        <button onclick="a11yReset()">איפוס הגדרות</button>
+        <a href="accessibility.html">הצהרת נגישות</a>
     </div>
 
     <script>
@@ -866,6 +905,51 @@
         }
         pingVisit();
         setInterval(pingVisit, 120000);
+
+        // ============ תפריט נגישות ============
+        function toggleA11yPanel() {
+            document.getElementById('a11y-panel').classList.toggle('open');
+        }
+
+        let a11yFontStep = parseInt(localStorage.getItem('a11y-font-step') || '0', 10);
+        function applyA11yFont() {
+            document.documentElement.style.fontSize = (100 + a11yFontStep * 12) + '%';
+        }
+        function a11yFontSize(delta) {
+            a11yFontStep = Math.max(-2, Math.min(4, a11yFontStep + delta));
+            localStorage.setItem('a11y-font-step', a11yFontStep);
+            applyA11yFont();
+        }
+
+        function a11yToggle(className, btn) {
+            document.body.classList.toggle(className);
+            const isOn = document.body.classList.contains(className);
+            localStorage.setItem(className, isOn ? '1' : '0');
+            btn.classList.toggle('active-toggle', isOn);
+        }
+
+        function a11yReset() {
+            ['a11y-contrast', 'a11y-underline', 'a11y-pause-anim'].forEach(cls => {
+                document.body.classList.remove(cls);
+                localStorage.setItem(cls, '0');
+            });
+            a11yFontStep = 0;
+            localStorage.setItem('a11y-font-step', 0);
+            applyA11yFont();
+            document.querySelectorAll('.a11y-panel button.active-toggle').forEach(b => b.classList.remove('active-toggle'));
+        }
+
+        // משחזרים העדפות נגישות שנשמרו מביקור קודם
+        (function restoreA11yPrefs() {
+            applyA11yFont();
+            [['a11y-contrast', 'a11y-contrast-btn'], ['a11y-underline', 'a11y-underline-btn'], ['a11y-pause-anim', 'a11y-pause-btn']].forEach(([cls, btnId]) => {
+                if (localStorage.getItem(cls) === '1') {
+                    document.body.classList.add(cls);
+                    const btn = document.getElementById(btnId);
+                    if (btn) btn.classList.add('active-toggle');
+                }
+            });
+        })();
     </script>
 </body>
 </html>
